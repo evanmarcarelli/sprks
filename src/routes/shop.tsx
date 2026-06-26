@@ -2,6 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import heroImg from "@/assets/hero-speaker.jpg";
 import { Check } from "lucide-react";
+import { addToWaitlist } from "@/lib/waitlist";
 
 export const Route = createFileRoute("/shop")({
   head: () => ({
@@ -18,11 +19,22 @@ export const Route = createFileRoute("/shop")({
 function ShopComingSoon() {
   const [email, setEmail] = useState("");
   const [submitted, setSubmitted] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
-  const submit = (e: React.FormEvent) => {
+  const submit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!email.trim()) return;
-    setSubmitted(true);
+    if (!email.trim() || loading) return;
+    setLoading(true);
+    setError("");
+    try {
+      await addToWaitlist({ data: email });
+      setSubmitted(true);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Something went wrong. Please try again.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -71,12 +83,14 @@ function ShopComingSoon() {
                 />
                 <button
                   type="submit"
-                  className="bg-silver-bright text-primary-foreground px-8 py-3.5 text-xs uppercase tracking-[0.3em] hover:opacity-90 transition"
+                  disabled={loading}
+                  className="bg-silver-bright text-primary-foreground px-8 py-3.5 text-xs uppercase tracking-[0.3em] hover:opacity-90 transition disabled:opacity-60 disabled:cursor-not-allowed"
                 >
-                  Request Access
+                  {loading ? "Adding…" : "Request Access"}
                 </button>
               </div>
             </label>
+            {error && <p className="mt-4 text-xs text-destructive">{error}</p>}
             <p className="mt-4 text-xs text-muted-foreground">
               One email when access opens. No marketing, ever.
             </p>
