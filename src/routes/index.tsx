@@ -1,8 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import heroImg from "@/assets/hero-speaker.jpg";
 import { products } from "@/lib/products";
 import { ProductCard } from "@/components/product-card";
-import { SoundSpaceIntro } from "@/components/sound-space-intro";
+import LineWaves from "@/components/line-waves";
 import { ShieldCheck, Truck, Sparkles, Headphones } from "lucide-react";
 
 export const Route = createFileRoute("/")({
@@ -21,14 +20,26 @@ function Index() {
   const featured = products.slice(0, 4);
   return (
     <>
-      <SoundSpaceIntro />
-
       {/* HERO */}
-      <section className="relative -mt-20 min-h-screen w-full overflow-hidden">
+      <section className="relative -mt-20 min-h-screen w-full overflow-hidden bg-background">
         <div className="absolute inset-0">
-          <img src={heroImg} alt="" width={1920} height={1280} className="h-full w-full object-cover opacity-80" />
-          <div className="absolute inset-0 bg-gradient-to-r from-background via-background/85 to-background/30" />
-          <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-background/40" />
+          <LineWaves
+            speed={0.3}
+            innerLineCount={32}
+            outerLineCount={36}
+            warpIntensity={1.0}
+            rotation={-45}
+            edgeFadeWidth={0.0}
+            colorCycleSpeed={1.0}
+            brightness={0.2}
+            color1="#ffffff"
+            color2="#ffffff"
+            color3="#ffffff"
+            enableMouseInteraction={true}
+            mouseInfluence={2.0}
+          />
+          <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-background via-background/70 to-background/20" />
+          <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent" />
         </div>
         <div className="relative mx-auto flex min-h-screen max-w-7xl flex-col justify-center px-8 pt-32 pb-20">
           <p className="text-xs uppercase tracking-[0.4em] text-silver">A Curated Marketplace</p>
