@@ -12,7 +12,7 @@ const EXPLODE_MS = 1200; // slow-mo blow apart
 const SPIN_MS = 1100; // the fragments swirl
 const FORM_MS = 1100; // fly out and fill the screen
 const TOTAL_MS = EXPLODE_MS + SPIN_MS + FORM_MS;
-const SPIN_ANGLE = Math.PI * 2 * 1.3; // 1.3 full turns
+const SPIN_ANGLE = Math.PI * 2 * 1.6; // 1.6 full turns — winds tighter
 
 const easeOut = (t: number) => 1 - Math.pow(1 - t, 3);
 const easeInOut = (t: number) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
@@ -283,8 +283,8 @@ export function SoundSpaceIntro() {
       for (let i = 0; i < n; i++) {
         const col = i % cols;
         const row = Math.floor(i / cols);
-        arr[i].gx = (col + 0.5) * cw + (Math.random() - 0.5) * cw * 0.7;
-        arr[i].gy = (row + 0.5) * ch + (Math.random() - 0.5) * ch * 0.7;
+        arr[i].gx = (col + 0.5) * cw + (Math.random() - 0.5) * cw * 1.5;
+        arr[i].gy = (row + 0.5) * ch + (Math.random() - 0.5) * ch * 1.5;
       }
       particles = arr;
     };
@@ -309,12 +309,12 @@ export function SoundSpaceIntro() {
         const ang = pr * SPIN_ANGLE;
         cosA = Math.cos(ang);
         sinA = Math.sin(ang);
-        k = 1 - 0.16 * pr;
+        k = 1 - 0.5 * pr; // wind the vortex tighter into the center
       }
       const inForm = !inExplode && !inSpin && elapsed <= TOTAL_MS;
       const afterForm = elapsed > TOTAL_MS;
       const formPr = inForm ? easeInOut((elapsed - EXPLODE_MS - SPIN_MS) / FORM_MS) : 0;
-      const fk = 0.84;
+      const fk = 0.5; // match the tightened vortex before flinging out
       const fcos = Math.cos(SPIN_ANGLE);
       const fsin = Math.sin(SPIN_ANGLE);
 
@@ -484,13 +484,13 @@ export function SoundSpaceIntro() {
       starsRef.current?.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 380, easing: "ease-out", fill: "forwards" });
       vignetteRef.current?.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 560, delay: 100, easing: "ease-out", fill: "forwards" });
 
-      // the one touch outside the overlay: the live page blooms into focus
+      // the one touch outside the overlay: the live page slides up into place
       document.querySelector("main")?.animate(
         [
-          { transform: "scale(0.96)", opacity: 0.3, filter: "blur(12px)" },
-          { transform: "scale(1)", opacity: 1, filter: "blur(0px)" },
+          { transform: "translateY(52px)", opacity: 0, filter: "blur(6px)" },
+          { transform: "translateY(0px)", opacity: 1, filter: "blur(0px)" },
         ],
-        { duration: 760, delay: 140, easing: "cubic-bezier(.2,.7,.2,1)" },
+        { duration: 820, delay: 150, easing: "cubic-bezier(.2,.75,.2,1)" },
       );
 
       finishedRef.current = true;
