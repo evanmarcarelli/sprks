@@ -1,0 +1,38 @@
+import { Link } from "@tanstack/react-router";
+
+const nav = [
+  { label: "Shop", to: "/shop" },
+  { label: "About", to: "/about" },
+  { label: "Community", to: "/community" },
+] as const;
+
+export function SiteHeader() {
+  return (
+    <header className="sticky top-0 z-50 glass">
+      <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-8">
+        <Link to="/" className="flex items-center gap-3">
+          <div className="h-7 w-7 rounded-full border border-silver/40 bg-gradient-to-br from-silver-bright to-silver/30" />
+          <span className="font-serif text-xl tracking-wide">Aura<span className="text-silver"> Audio</span></span>
+        </Link>
+        <nav className="hidden md:flex items-center gap-10">
+          {nav.map((n) => (
+            <Link
+              key={n.to}
+              to={n.to}
+              className="text-xs uppercase tracking-[0.25em] text-muted-foreground hover:text-foreground transition-colors"
+              activeProps={{ className: "text-foreground" }}
+            >
+              {n.label}
+            </Link>
+          ))}
+        </nav>
+        <Link
+          to="/login"
+          className="border border-border px-5 py-2.5 text-xs uppercase tracking-[0.25em] hover:bg-secondary transition"
+        >
+          Login
+        </Link>
+      </div>
+    </header>
+  );
+}
