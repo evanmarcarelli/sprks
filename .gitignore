@@ -15,8 +15,9 @@ dist-ssr
 .tanstack/**
 .nitro
 
-# Collected waitlist emails — never commit
-data/
+# Local env (e.g. SUPABASE_SERVICE_ROLE_KEY) — never commit
+.env
+.env.local
 *.local
 
 # Wrangler / Cloudflare

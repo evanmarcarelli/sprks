@@ -22,8 +22,8 @@ function AdminWaitlist() {
       const res = await getWaitlist({ data: key });
       setCount(res.count);
       setCsv(res.csv);
-    } catch {
-      setError("Unauthorized, or the waitlist is unavailable.");
+    } catch (e) {
+      setError(e instanceof Error ? e.message : "The waitlist is unavailable.");
       setCount(null);
       setCsv("");
     } finally {
@@ -46,8 +46,11 @@ function AdminWaitlist() {
       <p className="text-xs uppercase tracking-[0.4em] text-silver">Admin</p>
       <h1 className="mt-6 font-serif text-5xl">Waitlist export</h1>
       <p className="mt-6 max-w-xl text-sm leading-relaxed text-muted-foreground">
-        Every email submitted on the marketplace page is saved to <code className="text-foreground">data/waitlist.csv</code>.
-        Load it below and download a copy. If <code className="text-foreground">WAITLIST_KEY</code> is set, enter it first.
+        Every email submitted on the marketplace page is saved to your Supabase{" "}
+        <code className="text-foreground">waitlist</code> table. Load it below to download a CSV — or export straight
+        from the Supabase dashboard (Table editor → waitlist → Export to CSV). The in-app export needs{" "}
+        <code className="text-foreground">SUPABASE_SERVICE_ROLE_KEY</code> set on the server; if{" "}
+        <code className="text-foreground">WAITLIST_KEY</code> is also set, enter it first.
       </p>
 
       <div className="mt-10 flex flex-col gap-3 sm:flex-row sm:items-end">

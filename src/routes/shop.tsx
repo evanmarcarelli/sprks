@@ -2,7 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import heroImg from "@/assets/hero-speaker.jpg";
 import { Check } from "lucide-react";
-import { addToWaitlist } from "@/lib/waitlist";
+import { supabase } from "@/lib/supabase";
 
 export const Route = createFileRoute("/shop")({
   head: () => ({
@@ -24,11 +24,14 @@ function ShopComingSoon() {
 
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!email.trim() || loading) return;
+    const value = email.trim().toLowerCase();
+    if (!value || loading) return;
     setLoading(true);
     setError("");
     try {
-      await addToWaitlist({ data: email });
+      const { error: insertError } = await supabase.from("waitlist").insert({ email: value });
+      // 23505 = unique violation (already on the list) — treat as success.
+      if (insertError && insertError.code !== "23505") throw new Error(insertError.message);
       setSubmitted(true);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Something went wrong. Please try again.");
