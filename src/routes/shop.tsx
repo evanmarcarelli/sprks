@@ -18,6 +18,7 @@ export const Route = createFileRoute("/shop")({
 
 function ShopComingSoon() {
   const [email, setEmail] = useState("");
+  const [honeypot, setHoneypot] = useState("");
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -29,9 +30,13 @@ function ShopComingSoon() {
     setLoading(true);
     setError("");
     try {
-      const { error: insertError } = await supabase.from("waitlist").insert({ email: value });
-      // 23505 = unique violation (already on the list) — treat as success.
-      if (insertError && insertError.code !== "23505") throw new Error(insertError.message);
+      // Honeypot: a real person never fills the hidden field. If it's filled,
+      // it's a bot — show the success state but skip the insert.
+      if (!honeypot.trim()) {
+        const { error: insertError } = await supabase.from("waitlist").insert({ email: value });
+        // 23505 = unique violation (already on the list) — treat as success.
+        if (insertError && insertError.code !== "23505") throw new Error(insertError.message);
+      }
       setSubmitted(true);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Something went wrong. Please try again.");
@@ -73,6 +78,17 @@ function ShopComingSoon() {
           </div>
         ) : (
           <form onSubmit={submit} className="mt-12 max-w-lg">
+            {/* honeypot — hidden from people, catches form bots */}
+            <input
+              type="text"
+              name="company"
+              tabIndex={-1}
+              autoComplete="off"
+              aria-hidden="true"
+              value={honeypot}
+              onChange={(e) => setHoneypot(e.target.value)}
+              className="absolute left-[-9999px] h-0 w-0 opacity-0"
+            />
             <label className="block">
               <span className="block text-[10px] uppercase tracking-[0.3em] text-silver mb-2">Email Address</span>
               <div className="flex flex-col gap-3 sm:flex-row">
