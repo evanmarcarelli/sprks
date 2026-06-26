@@ -1,4 +1,5 @@
 import { Link } from "@tanstack/react-router";
+import { Logo } from "@/components/logo";
 
 const nav = [
   { label: "Shop", to: "/shop" },
@@ -10,9 +11,9 @@ export function SiteHeader() {
   return (
     <header className="sticky top-0 z-50 glass">
       <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-8">
-        <Link to="/" className="flex items-center gap-3">
-          <div className="h-7 w-7 rounded-full border border-silver/40 bg-gradient-to-br from-silver-bright to-silver/30" />
-          <span className="font-serif text-xl tracking-wide">Aura<span className="text-silver"> Audio</span></span>
+        <Link to="/" className="flex items-center gap-2.5">
+          <Logo className="h-7 w-7" />
+          <span className="font-serif text-xl tracking-[0.02em]">Spkrs</span>
         </Link>
         <nav className="hidden md:flex items-center gap-10">
           {nav.map((n) => (

@@ -4,10 +4,10 @@ import { useState } from "react";
 export const Route = createFileRoute("/login")({
   head: () => ({
     meta: [
-      { title: "Login — Aura Audio" },
-      { name: "description", content: "Sign in to your Aura Audio account." },
-      { property: "og:title", content: "Login — Aura Audio" },
-      { property: "og:description", content: "Sign in to your Aura Audio account." },
+      { title: "Login — Spkrs" },
+      { name: "description", content: "Sign in to your Spkrs account." },
+      { property: "og:title", content: "Login — Spkrs" },
+      { property: "og:description", content: "Sign in to your Spkrs account." },
     ],
   }),
   component: LoginPage,
@@ -27,7 +27,7 @@ function LoginPage() {
         <div className="text-center">
           <div className="mx-auto h-10 w-10 rounded-full border border-silver/40 bg-gradient-to-br from-silver-bright to-silver/30" />
           <h1 className="mt-6 font-serif text-3xl">Welcome back</h1>
-          <p className="mt-2 text-sm text-muted-foreground">Sign in to your Aura Audio account</p>
+          <p className="mt-2 text-sm text-muted-foreground">Sign in to your Spkrs account</p>
         </div>
 
         <form className="mt-10 space-y-6" onSubmit={(e) => e.preventDefault()}>
@@ -59,7 +59,7 @@ function LoginPage() {
         </form>
 
         <p className="mt-8 text-center text-sm text-muted-foreground">
-          New to Aura? <Link to="/login" className="text-foreground border-b border-silver/40 hover:border-silver">Request access</Link>
+          New to Spkrs? <Link to="/login" className="text-foreground border-b border-silver/40 hover:border-silver">Request access</Link>
         </p>
       </div>
     </div>

@@ -5,10 +5,10 @@ import { ChevronUp, MessageCircle } from "lucide-react";
 export const Route = createFileRoute("/community")({
   head: () => ({
     meta: [
-      { title: "Community Feedback — Aura Audio" },
-      { name: "description", content: "Submit feature requests and shape the future of the Aura Audio marketplace." },
-      { property: "og:title", content: "Community Feedback — Aura Audio" },
-      { property: "og:description", content: "Submit feature requests and shape the future of Aura Audio." },
+      { title: "Community Feedback — Spkrs" },
+      { name: "description", content: "Submit feature requests and shape the future of the Spkrs marketplace." },
+      { property: "og:title", content: "Community Feedback — Spkrs" },
+      { property: "og:description", content: "Submit feature requests and shape the future of Spkrs." },
     ],
   }),
   component: CommunityPage,

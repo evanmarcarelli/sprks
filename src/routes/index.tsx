@@ -7,9 +7,9 @@ import { ShieldCheck, Truck, Sparkles, Headphones } from "lucide-react";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Aura Audio — The Marketplace for High-End Sound" },
+      { title: "Spkrs — The Marketplace for High-End Sound" },
       { name: "description", content: "Curated, authenticated, audiophile-grade speakers, headphones, amplifiers and turntables." },
-      { property: "og:title", content: "Aura Audio" },
+      { property: "og:title", content: "Spkrs" },
       { property: "og:description", content: "The premium marketplace for luxury audio equipment." },
     ],
   }),
@@ -47,7 +47,7 @@ function Index() {
             Sound, <em className="text-silver not-italic">distilled</em> to its purest form.
           </h1>
           <p className="mt-8 max-w-xl text-base leading-relaxed text-muted-foreground">
-            Aura Audio is where the world's most discerning listeners discover, trade, and collect reference-grade equipment. Every piece, authenticated. Every transaction, insured.
+            Spkrs is where the world's most discerning listeners discover, trade, and collect reference-grade equipment. Every piece, authenticated. Every transaction, insured.
           </p>
           <div className="mt-12 flex flex-wrap gap-4">
             <Link to="/shop" className="bg-silver-bright text-primary-foreground px-8 py-4 text-xs uppercase tracking-[0.3em] hover:opacity-90 transition">
@@ -85,7 +85,7 @@ function Index() {
       <section className="hairline">
         <div className="mx-auto max-w-7xl px-8 py-32">
           <div className="max-w-2xl">
-            <p className="text-xs uppercase tracking-[0.3em] text-silver">The Aura Standard</p>
+            <p className="text-xs uppercase tracking-[0.3em] text-silver">The Spkrs Standard</p>
             <h2 className="mt-4 font-serif text-5xl">Built for those who hear the difference.</h2>
           </div>
           <div className="mt-20 grid gap-px bg-border md:grid-cols-2 lg:grid-cols-4">

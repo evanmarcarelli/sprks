@@ -6,10 +6,10 @@ import { Check } from "lucide-react";
 export const Route = createFileRoute("/shop")({
   head: () => ({
     meta: [
-      { title: "Marketplace — Coming Soon | Aura Audio" },
-      { name: "description", content: "The Aura Audio marketplace is opening soon. Request beta access to be among the first." },
+      { title: "Marketplace — Coming Soon | Spkrs" },
+      { name: "description", content: "The Spkrs marketplace is opening soon. Request beta access to be among the first." },
       { property: "og:title", content: "Marketplace — Coming Soon" },
-      { property: "og:description", content: "Request beta access to the Aura Audio marketplace." },
+      { property: "og:description", content: "Request beta access to the Spkrs marketplace." },
     ],
   }),
   component: ShopComingSoon,
@@ -39,7 +39,7 @@ function ShopComingSoon() {
           Opening soon, by <em className="text-silver not-italic">invitation</em>.
         </h1>
         <p className="mt-8 max-w-xl text-base leading-relaxed text-muted-foreground">
-          The Aura Audio marketplace is in private beta with a small circle of collectors and makers. Leave your email to be considered for early access.
+          The Spkrs marketplace is in private beta with a small circle of collectors and makers. Leave your email to be considered for early access.
         </p>
 
         {submitted ? (

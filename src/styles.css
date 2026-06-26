@@ -36,7 +36,7 @@
 
 :root {
   --radius: 0.5rem;
-  /* Aura Audio — luxury dark theme */
+  /* Spkrs — luxury dark theme */
   --background: oklch(0.14 0.005 240);          /* near-black */
   --foreground: oklch(0.98 0.002 240);          /* crisp white */
   --card: oklch(0.18 0.005 240);                /* charcoal */
