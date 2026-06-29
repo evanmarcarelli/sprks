@@ -4,6 +4,7 @@ import {
   Link,
   createRootRouteWithContext,
   useRouter,
+  useRouterState,
   HeadContent,
   Scripts,
 } from "@tanstack/react-router";
@@ -13,6 +14,7 @@ import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
+import { StoreProvider } from "@/lib/store";
 
 function NotFoundComponent() {
   return (
@@ -95,15 +97,26 @@ function RootShell({ children }: { children: ReactNode }) {
 
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
+  // Product routes live under the pathless `_tabs` layout, which renders its own
+  // mobile shell + tab bar. Skip the marketing header/footer for those.
+  const isAppRoute = useRouterState({
+    select: (s) => s.matches.some((m) => m.routeId.startsWith("/_tabs")),
+  });
   return (
     <QueryClientProvider client={queryClient}>
-      <div className="flex min-h-screen flex-col">
-        <SiteHeader />
-        <main className="flex-1">
+      <StoreProvider>
+        {isAppRoute ? (
           <Outlet />
-        </main>
-        <SiteFooter />
-      </div>
+        ) : (
+          <div className="flex min-h-screen flex-col">
+            <SiteHeader />
+            <main className="flex-1">
+              <Outlet />
+            </main>
+            <SiteFooter />
+          </div>
+        )}
+      </StoreProvider>
     </QueryClientProvider>
   );
 }

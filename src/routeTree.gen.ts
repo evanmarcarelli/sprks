@@ -13,8 +13,10 @@ import { Route as ShopRouteImport } from './routes/shop'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as CommunityRouteImport } from './routes/community'
 import { Route as AboutRouteImport } from './routes/about'
+import { Route as TabsRouteImport } from './routes/_tabs'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AdminWaitlistRouteImport } from './routes/admin.waitlist'
+import { Route as TabsMarketplaceRouteImport } from './routes/_tabs.marketplace'
 
 const ShopRoute = ShopRouteImport.update({
   id: '/shop',
@@ -36,6 +38,10 @@ const AboutRoute = AboutRouteImport.update({
   path: '/about',
   getParentRoute: () => rootRouteImport,
 } as any)
+const TabsRoute = TabsRouteImport.update({
+  id: '/_tabs',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -46,6 +52,11 @@ const AdminWaitlistRoute = AdminWaitlistRouteImport.update({
   path: '/admin/waitlist',
   getParentRoute: () => rootRouteImport,
 } as any)
+const TabsMarketplaceRoute = TabsMarketplaceRouteImport.update({
+  id: '/marketplace',
+  path: '/marketplace',
+  getParentRoute: () => TabsRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -53,6 +64,7 @@ export interface FileRoutesByFullPath {
   '/community': typeof CommunityRoute
   '/login': typeof LoginRoute
   '/shop': typeof ShopRoute
+  '/marketplace': typeof TabsMarketplaceRoute
   '/admin/waitlist': typeof AdminWaitlistRoute
 }
 export interface FileRoutesByTo {
@@ -61,15 +73,18 @@ export interface FileRoutesByTo {
   '/community': typeof CommunityRoute
   '/login': typeof LoginRoute
   '/shop': typeof ShopRoute
+  '/marketplace': typeof TabsMarketplaceRoute
   '/admin/waitlist': typeof AdminWaitlistRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/_tabs': typeof TabsRouteWithChildren
   '/about': typeof AboutRoute
   '/community': typeof CommunityRoute
   '/login': typeof LoginRoute
   '/shop': typeof ShopRoute
+  '/_tabs/marketplace': typeof TabsMarketplaceRoute
   '/admin/waitlist': typeof AdminWaitlistRoute
 }
 export interface FileRouteTypes {
@@ -80,21 +95,32 @@ export interface FileRouteTypes {
     | '/community'
     | '/login'
     | '/shop'
+    | '/marketplace'
     | '/admin/waitlist'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/about' | '/community' | '/login' | '/shop' | '/admin/waitlist'
-  id:
-    | '__root__'
+  to:
     | '/'
     | '/about'
     | '/community'
     | '/login'
     | '/shop'
+    | '/marketplace'
+    | '/admin/waitlist'
+  id:
+    | '__root__'
+    | '/'
+    | '/_tabs'
+    | '/about'
+    | '/community'
+    | '/login'
+    | '/shop'
+    | '/_tabs/marketplace'
     | '/admin/waitlist'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  TabsRoute: typeof TabsRouteWithChildren
   AboutRoute: typeof AboutRoute
   CommunityRoute: typeof CommunityRoute
   LoginRoute: typeof LoginRoute
@@ -132,6 +158,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AboutRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_tabs': {
+      id: '/_tabs'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof TabsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -146,11 +179,29 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminWaitlistRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_tabs/marketplace': {
+      id: '/_tabs/marketplace'
+      path: '/marketplace'
+      fullPath: '/marketplace'
+      preLoaderRoute: typeof TabsMarketplaceRouteImport
+      parentRoute: typeof TabsRoute
+    }
   }
 }
 
+interface TabsRouteChildren {
+  TabsMarketplaceRoute: typeof TabsMarketplaceRoute
+}
+
+const TabsRouteChildren: TabsRouteChildren = {
+  TabsMarketplaceRoute: TabsMarketplaceRoute,
+}
+
+const TabsRouteWithChildren = TabsRoute._addFileChildren(TabsRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  TabsRoute: TabsRouteWithChildren,
   AboutRoute: AboutRoute,
   CommunityRoute: CommunityRoute,
   LoginRoute: LoginRoute,
