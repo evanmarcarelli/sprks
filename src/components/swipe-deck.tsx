@@ -84,6 +84,17 @@ function SwipeCard({
   const passOpacity = useTransform(x, [-140, -40], [1, 0]);
   const [savedPulse, setSavedPulse] = useState(false);
 
+  // Gallery: the listing's photos (cover + extra gallery shots). Tapping the
+  // left / right 15% edge of the photo pages through them.
+  const images = useMemo(
+    () => [speaker.image, ...(speaker.gallery ?? [])].filter(Boolean),
+    [speaker],
+  );
+  const [imgIdx, setImgIdx] = useState(0);
+  const showImg = images[imgIdx] ?? speaker.image;
+  const prevImg = () => setImgIdx((i) => (i - 1 + images.length) % images.length);
+  const nextImg = () => setImgIdx((i) => (i + 1) % images.length);
+
   const isTop = index === 0;
   const scale = 1 - index * 0.04;
   const translateY = index * 10;
@@ -138,7 +149,8 @@ function SwipeCard({
             }}
           />
           <img
-            src={speaker.image}
+            key={showImg}
+            src={showImg}
             alt={`${speaker.brand} ${speaker.model}`}
             className="relative h-full w-full object-cover"
             draggable={false}
@@ -149,6 +161,55 @@ function SwipeCard({
           <div className="pointer-events-none absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-black/55 to-transparent" />
           <div className="pointer-events-none absolute inset-x-0 bottom-0 h-[58%] bg-gradient-to-t from-black/85 via-black/55 to-transparent" />
         </div>
+
+        {/* Photo position indicator (segmented bar, like a story) */}
+        {isTop && images.length > 1 && (
+          <div className="absolute inset-x-3 top-2.5 z-20 flex gap-1">
+            {images.map((_, i) => (
+              <span
+                key={i}
+                className={`h-0.5 flex-1 rounded-full transition-colors ${
+                  i === imgIdx ? "bg-white" : "bg-white/30"
+                }`}
+              />
+            ))}
+          </div>
+        )}
+
+        {/* Tap zones — sides page through the gallery, center opens the listing.
+            Rendered before the chrome below so the action buttons / swipe-up
+            button stay on top and clickable. */}
+        {isTop && (
+          <>
+            <button
+              type="button"
+              aria-label="Previous photo"
+              onClick={(e) => {
+                e.stopPropagation();
+                prevImg();
+              }}
+              className="absolute left-0 top-0 z-10 h-full w-[15%] cursor-w-resize focus:outline-none"
+            />
+            <button
+              type="button"
+              aria-label="Next photo"
+              onClick={(e) => {
+                e.stopPropagation();
+                nextImg();
+              }}
+              className="absolute right-0 top-0 z-10 h-full w-[15%] cursor-e-resize focus:outline-none"
+            />
+            <button
+              type="button"
+              aria-label={`Open ${speaker.brand} ${speaker.model} listing`}
+              onClick={(e) => {
+                e.stopPropagation();
+                onOpen();
+              }}
+              className="absolute inset-y-0 left-[15%] right-[15%] z-10 cursor-pointer focus:outline-none"
+            />
+          </>
+        )}
 
         <div className="absolute left-4 top-4 flex gap-1.5">
           {cat && <Chip>{cat.shortLabel}</Chip>}
@@ -191,7 +252,7 @@ function SwipeCard({
           </div>
         )}
 
-        <div className="absolute inset-x-0 bottom-0 p-5 pb-7 text-white">
+        <div className="absolute inset-x-0 bottom-0 z-20 p-5 pb-7 text-white">
           <div className="flex items-baseline justify-between gap-3">
             <p className="text-[11px] uppercase tracking-[0.22em] text-white/70">
               {speaker.brand}
@@ -226,7 +287,7 @@ function SwipeCard({
         </div>
 
         {isTop && (
-          <div className="absolute right-3.5 top-3.5 flex flex-col gap-2.5">
+          <div className="absolute right-3.5 top-3.5 z-20 flex flex-col gap-2.5">
             <button
               onClick={onPass}
               className="grid h-12 w-12 place-items-center rounded-full border border-white/25 bg-black/35 text-white backdrop-blur transition hover:bg-black/55 active:scale-95"
