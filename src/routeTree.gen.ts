@@ -14,6 +14,7 @@ import { Route as SellRouteImport } from './routes/sell'
 import { Route as OnboardingRouteImport } from './routes/onboarding'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as CommunityRouteImport } from './routes/community'
+import { Route as AccountRouteImport } from './routes/account'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as TabsRouteImport } from './routes/_tabs'
 import { Route as IndexRouteImport } from './routes/index'
@@ -26,6 +27,7 @@ import { Route as OnboardingCategoriesRouteImport } from './routes/onboarding.ca
 import { Route as OnboardingBudgetRouteImport } from './routes/onboarding.budget'
 import { Route as OnboardingBrandsRouteImport } from './routes/onboarding.brands'
 import { Route as AdminWaitlistRouteImport } from './routes/admin.waitlist'
+import { Route as AdminSellersRouteImport } from './routes/admin.sellers'
 import { Route as TabsShopRouteImport } from './routes/_tabs.shop'
 import { Route as TabsSavedRouteImport } from './routes/_tabs.saved'
 import { Route as TabsMarketplaceRouteImport } from './routes/_tabs.marketplace'
@@ -53,6 +55,11 @@ const LoginRoute = LoginRouteImport.update({
 const CommunityRoute = CommunityRouteImport.update({
   id: '/community',
   path: '/community',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AccountRoute = AccountRouteImport.update({
+  id: '/account',
+  path: '/account',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AboutRoute = AboutRouteImport.update({
@@ -114,6 +121,11 @@ const AdminWaitlistRoute = AdminWaitlistRouteImport.update({
   path: '/admin/waitlist',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminSellersRoute = AdminSellersRouteImport.update({
+  id: '/admin/sellers',
+  path: '/admin/sellers',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const TabsShopRoute = TabsShopRouteImport.update({
   id: '/shop',
   path: '/shop',
@@ -133,6 +145,7 @@ const TabsMarketplaceRoute = TabsMarketplaceRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/account': typeof AccountRoute
   '/community': typeof CommunityRoute
   '/login': typeof LoginRoute
   '/onboarding': typeof OnboardingRouteWithChildren
@@ -141,6 +154,7 @@ export interface FileRoutesByFullPath {
   '/marketplace': typeof TabsMarketplaceRoute
   '/saved': typeof TabsSavedRoute
   '/shop': typeof TabsShopRoute
+  '/admin/sellers': typeof AdminSellersRoute
   '/admin/waitlist': typeof AdminWaitlistRoute
   '/onboarding/brands': typeof OnboardingBrandsRoute
   '/onboarding/budget': typeof OnboardingBudgetRoute
@@ -154,6 +168,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/account': typeof AccountRoute
   '/community': typeof CommunityRoute
   '/login': typeof LoginRoute
   '/onboarding': typeof OnboardingRouteWithChildren
@@ -162,6 +177,7 @@ export interface FileRoutesByTo {
   '/marketplace': typeof TabsMarketplaceRoute
   '/saved': typeof TabsSavedRoute
   '/shop': typeof TabsShopRoute
+  '/admin/sellers': typeof AdminSellersRoute
   '/admin/waitlist': typeof AdminWaitlistRoute
   '/onboarding/brands': typeof OnboardingBrandsRoute
   '/onboarding/budget': typeof OnboardingBudgetRoute
@@ -177,6 +193,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/_tabs': typeof TabsRouteWithChildren
   '/about': typeof AboutRoute
+  '/account': typeof AccountRoute
   '/community': typeof CommunityRoute
   '/login': typeof LoginRoute
   '/onboarding': typeof OnboardingRouteWithChildren
@@ -185,6 +202,7 @@ export interface FileRoutesById {
   '/_tabs/marketplace': typeof TabsMarketplaceRoute
   '/_tabs/saved': typeof TabsSavedRoute
   '/_tabs/shop': typeof TabsShopRoute
+  '/admin/sellers': typeof AdminSellersRoute
   '/admin/waitlist': typeof AdminWaitlistRoute
   '/onboarding/brands': typeof OnboardingBrandsRoute
   '/onboarding/budget': typeof OnboardingBudgetRoute
@@ -200,6 +218,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/about'
+    | '/account'
     | '/community'
     | '/login'
     | '/onboarding'
@@ -208,6 +227,7 @@ export interface FileRouteTypes {
     | '/marketplace'
     | '/saved'
     | '/shop'
+    | '/admin/sellers'
     | '/admin/waitlist'
     | '/onboarding/brands'
     | '/onboarding/budget'
@@ -221,6 +241,7 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/about'
+    | '/account'
     | '/community'
     | '/login'
     | '/onboarding'
@@ -229,6 +250,7 @@ export interface FileRouteTypes {
     | '/marketplace'
     | '/saved'
     | '/shop'
+    | '/admin/sellers'
     | '/admin/waitlist'
     | '/onboarding/brands'
     | '/onboarding/budget'
@@ -243,6 +265,7 @@ export interface FileRouteTypes {
     | '/'
     | '/_tabs'
     | '/about'
+    | '/account'
     | '/community'
     | '/login'
     | '/onboarding'
@@ -251,6 +274,7 @@ export interface FileRouteTypes {
     | '/_tabs/marketplace'
     | '/_tabs/saved'
     | '/_tabs/shop'
+    | '/admin/sellers'
     | '/admin/waitlist'
     | '/onboarding/brands'
     | '/onboarding/budget'
@@ -266,11 +290,13 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   TabsRoute: typeof TabsRouteWithChildren
   AboutRoute: typeof AboutRoute
+  AccountRoute: typeof AccountRoute
   CommunityRoute: typeof CommunityRoute
   LoginRoute: typeof LoginRoute
   OnboardingRoute: typeof OnboardingRouteWithChildren
   SellRoute: typeof SellRoute
   WelcomeRoute: typeof WelcomeRoute
+  AdminSellersRoute: typeof AdminSellersRoute
   AdminWaitlistRoute: typeof AdminWaitlistRoute
 }
 
@@ -309,6 +335,13 @@ declare module '@tanstack/react-router' {
       path: '/community'
       fullPath: '/community'
       preLoaderRoute: typeof CommunityRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/account': {
+      id: '/account'
+      path: '/account'
+      fullPath: '/account'
+      preLoaderRoute: typeof AccountRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/about': {
@@ -395,6 +428,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminWaitlistRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin/sellers': {
+      id: '/admin/sellers'
+      path: '/admin/sellers'
+      fullPath: '/admin/sellers'
+      preLoaderRoute: typeof AdminSellersRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/_tabs/shop': {
       id: '/_tabs/shop'
       path: '/shop'
@@ -463,11 +503,13 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   TabsRoute: TabsRouteWithChildren,
   AboutRoute: AboutRoute,
+  AccountRoute: AccountRoute,
   CommunityRoute: CommunityRoute,
   LoginRoute: LoginRoute,
   OnboardingRoute: OnboardingRouteWithChildren,
   SellRoute: SellRoute,
   WelcomeRoute: WelcomeRoute,
+  AdminSellersRoute: AdminSellersRoute,
   AdminWaitlistRoute: AdminWaitlistRoute,
 }
 export const routeTree = rootRouteImport

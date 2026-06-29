@@ -8,5 +8,8 @@ const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL ?? "https://cxexzksxgpuiu
 const SUPABASE_ANON_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY ?? "sb_publishable_R8lkd84h8-a6UBkWSdEmgw_XCP2gG8k";
 
 export const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
-  auth: { persistSession: false, autoRefreshToken: false },
+  // Real auth: persist the session (localStorage on the client) and keep the
+  // access token fresh. On the server there's no storage, so supabase-js falls
+  // back to an in-memory store — all auth calls run client-side (see auth.tsx).
+  auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true },
 });

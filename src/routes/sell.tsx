@@ -3,6 +3,7 @@ import { useState } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import { Check } from "lucide-react";
 import { supabase } from "@/lib/supabase";
+import { useAuth } from "@/lib/auth";
 import { CATEGORIES } from "@/lib/catalog/categories";
 
 const CONDITIONS = [
@@ -27,6 +28,8 @@ export const Route = createFileRoute("/sell")({
 function SellPage() {
   const navigate = useNavigate();
   const qc = useQueryClient();
+  const { user, profile, loading: authLoading } = useAuth();
+  const isVerified = profile?.seller_status === "verified";
 
   const [form, setForm] = useState({
     brand: "",
@@ -68,6 +71,7 @@ function SellPage() {
     setError("");
     try {
       const { error: insertError } = await supabase.from("listings").insert({
+        user_id: user?.id ?? null,
         brand: form.brand.trim(),
         model: form.model.trim(),
         price,
@@ -94,6 +98,27 @@ function SellPage() {
     }
   };
 
+  // Selling requires an account. Gate before showing the form.
+  if (!authLoading && !user) {
+    return (
+      <div className="mx-auto flex min-h-[calc(100vh-5rem)] max-w-2xl flex-col items-center justify-center px-8 text-center">
+        <p className="text-xs uppercase tracking-[0.4em] text-silver">Sell on Spkrs</p>
+        <h1 className="mt-5 font-serif text-5xl">Sign in to list a piece.</h1>
+        <p className="mt-5 max-w-md text-sm leading-relaxed text-muted-foreground">
+          Spkrs is a verified marketplace. Create a free account to list your gear —
+          new sellers are reviewed before listings go public.
+        </p>
+        <Link
+          to="/login"
+          search={{ redirect: "/sell" }}
+          className="mt-9 inline-block bg-silver-bright text-primary-foreground px-9 py-4 text-xs uppercase tracking-[0.3em] hover:opacity-90 transition"
+        >
+          Sign in to continue
+        </Link>
+      </div>
+    );
+  }
+
   if (done) {
     return (
       <div className="mx-auto max-w-2xl px-8 pt-24 pb-32">
@@ -103,9 +128,24 @@ function SellPage() {
               <Check className="h-4 w-4" strokeWidth={2.5} />
             </div>
             <div>
-              <h1 className="font-serif text-3xl">Your piece is listed.</h1>
+              <h1 className="font-serif text-3xl">
+                {isVerified ? "Your piece is listed." : "Listing submitted."}
+              </h1>
               <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
-                {form.brand} {form.model} is now live on the marketplace.
+                {isVerified ? (
+                  <>
+                    {form.brand} {form.model} is now live on the marketplace.
+                  </>
+                ) : (
+                  <>
+                    {form.brand} {form.model} is saved. It goes live automatically once
+                    you're approved as a verified seller —{" "}
+                    <Link to="/account" className="text-foreground border-b border-silver/40">
+                      check your status
+                    </Link>
+                    .
+                  </>
+                )}
               </p>
               <div className="mt-6 flex flex-wrap gap-3">
                 <Link
@@ -136,9 +176,26 @@ function SellPage() {
       <p className="text-xs uppercase tracking-[0.4em] text-silver">Sell on Spkrs</p>
       <h1 className="mt-5 font-serif text-5xl md:text-6xl">List a piece.</h1>
       <p className="mt-5 max-w-xl text-base leading-relaxed text-muted-foreground">
-        Reach a community of serious listeners. Add the details below — your listing goes live on the
-        marketplace immediately.
+        {isVerified
+          ? "Reach a community of serious listeners. Add the details below — your listing goes live on the marketplace immediately."
+          : "Reach a community of serious listeners. Add the details below — your listing is held until you're approved as a verified seller, then publishes automatically."}
       </p>
+
+      {!isVerified && (
+        <div className="mt-7 glass p-5 text-sm leading-relaxed text-muted-foreground">
+          {profile?.seller_status === "pending" ? (
+            <>Your seller application is under review. Listings you create now will publish once you're approved.</>
+          ) : (
+            <>
+              You're not a verified seller yet.{" "}
+              <Link to="/account" className="text-foreground border-b border-silver/40">
+                Apply for verification
+              </Link>{" "}
+              so your listings can go live.
+            </>
+          )}
+        </div>
+      )}
 
       <form onSubmit={submit} className="mt-12 space-y-7">
         {/* honeypot — hidden from people, catches form bots */}
