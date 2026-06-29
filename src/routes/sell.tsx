@@ -42,6 +42,7 @@ function SellPage() {
     tags: "",
     description: "",
   });
+  const [honeypot, setHoneypot] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [done, setDone] = useState(false);
@@ -52,6 +53,12 @@ function SellPage() {
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (loading) return;
+    // Honeypot: a real person never fills the hidden field. If it's filled it's
+    // a bot — show the success state but skip the insert.
+    if (honeypot.trim()) {
+      setDone(true);
+      return;
+    }
     const price = Math.round(Number(form.price));
     if (!form.brand.trim() || !form.model.trim() || !Number.isFinite(price) || price < 0) {
       setError("Brand, model, and a valid price are required.");
@@ -134,6 +141,17 @@ function SellPage() {
       </p>
 
       <form onSubmit={submit} className="mt-12 space-y-7">
+        {/* honeypot — hidden from people, catches form bots */}
+        <input
+          type="text"
+          name="company"
+          tabIndex={-1}
+          autoComplete="off"
+          aria-hidden="true"
+          value={honeypot}
+          onChange={(e) => setHoneypot(e.target.value)}
+          className="absolute left-[-9999px] h-0 w-0 opacity-0"
+        />
         <div className="grid gap-7 sm:grid-cols-2">
           <Field label="Brand" required>
             <input value={form.brand} onChange={set("brand")} placeholder="KEF" className={inputCls} />
