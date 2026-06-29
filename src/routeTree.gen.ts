@@ -9,20 +9,16 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as ShopRouteImport } from './routes/shop'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as CommunityRouteImport } from './routes/community'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as TabsRouteImport } from './routes/_tabs'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AdminWaitlistRouteImport } from './routes/admin.waitlist'
+import { Route as TabsShopRouteImport } from './routes/_tabs.shop'
+import { Route as TabsSavedRouteImport } from './routes/_tabs.saved'
 import { Route as TabsMarketplaceRouteImport } from './routes/_tabs.marketplace'
 
-const ShopRoute = ShopRouteImport.update({
-  id: '/shop',
-  path: '/shop',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const LoginRoute = LoginRouteImport.update({
   id: '/login',
   path: '/login',
@@ -52,6 +48,16 @@ const AdminWaitlistRoute = AdminWaitlistRouteImport.update({
   path: '/admin/waitlist',
   getParentRoute: () => rootRouteImport,
 } as any)
+const TabsShopRoute = TabsShopRouteImport.update({
+  id: '/shop',
+  path: '/shop',
+  getParentRoute: () => TabsRoute,
+} as any)
+const TabsSavedRoute = TabsSavedRouteImport.update({
+  id: '/saved',
+  path: '/saved',
+  getParentRoute: () => TabsRoute,
+} as any)
 const TabsMarketplaceRoute = TabsMarketplaceRouteImport.update({
   id: '/marketplace',
   path: '/marketplace',
@@ -63,8 +69,9 @@ export interface FileRoutesByFullPath {
   '/about': typeof AboutRoute
   '/community': typeof CommunityRoute
   '/login': typeof LoginRoute
-  '/shop': typeof ShopRoute
   '/marketplace': typeof TabsMarketplaceRoute
+  '/saved': typeof TabsSavedRoute
+  '/shop': typeof TabsShopRoute
   '/admin/waitlist': typeof AdminWaitlistRoute
 }
 export interface FileRoutesByTo {
@@ -72,8 +79,9 @@ export interface FileRoutesByTo {
   '/about': typeof AboutRoute
   '/community': typeof CommunityRoute
   '/login': typeof LoginRoute
-  '/shop': typeof ShopRoute
   '/marketplace': typeof TabsMarketplaceRoute
+  '/saved': typeof TabsSavedRoute
+  '/shop': typeof TabsShopRoute
   '/admin/waitlist': typeof AdminWaitlistRoute
 }
 export interface FileRoutesById {
@@ -83,8 +91,9 @@ export interface FileRoutesById {
   '/about': typeof AboutRoute
   '/community': typeof CommunityRoute
   '/login': typeof LoginRoute
-  '/shop': typeof ShopRoute
   '/_tabs/marketplace': typeof TabsMarketplaceRoute
+  '/_tabs/saved': typeof TabsSavedRoute
+  '/_tabs/shop': typeof TabsShopRoute
   '/admin/waitlist': typeof AdminWaitlistRoute
 }
 export interface FileRouteTypes {
@@ -94,8 +103,9 @@ export interface FileRouteTypes {
     | '/about'
     | '/community'
     | '/login'
-    | '/shop'
     | '/marketplace'
+    | '/saved'
+    | '/shop'
     | '/admin/waitlist'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -103,8 +113,9 @@ export interface FileRouteTypes {
     | '/about'
     | '/community'
     | '/login'
-    | '/shop'
     | '/marketplace'
+    | '/saved'
+    | '/shop'
     | '/admin/waitlist'
   id:
     | '__root__'
@@ -113,8 +124,9 @@ export interface FileRouteTypes {
     | '/about'
     | '/community'
     | '/login'
-    | '/shop'
     | '/_tabs/marketplace'
+    | '/_tabs/saved'
+    | '/_tabs/shop'
     | '/admin/waitlist'
   fileRoutesById: FileRoutesById
 }
@@ -124,19 +136,11 @@ export interface RootRouteChildren {
   AboutRoute: typeof AboutRoute
   CommunityRoute: typeof CommunityRoute
   LoginRoute: typeof LoginRoute
-  ShopRoute: typeof ShopRoute
   AdminWaitlistRoute: typeof AdminWaitlistRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/shop': {
-      id: '/shop'
-      path: '/shop'
-      fullPath: '/shop'
-      preLoaderRoute: typeof ShopRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/login': {
       id: '/login'
       path: '/login'
@@ -179,6 +183,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminWaitlistRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_tabs/shop': {
+      id: '/_tabs/shop'
+      path: '/shop'
+      fullPath: '/shop'
+      preLoaderRoute: typeof TabsShopRouteImport
+      parentRoute: typeof TabsRoute
+    }
+    '/_tabs/saved': {
+      id: '/_tabs/saved'
+      path: '/saved'
+      fullPath: '/saved'
+      preLoaderRoute: typeof TabsSavedRouteImport
+      parentRoute: typeof TabsRoute
+    }
     '/_tabs/marketplace': {
       id: '/_tabs/marketplace'
       path: '/marketplace'
@@ -191,10 +209,14 @@ declare module '@tanstack/react-router' {
 
 interface TabsRouteChildren {
   TabsMarketplaceRoute: typeof TabsMarketplaceRoute
+  TabsSavedRoute: typeof TabsSavedRoute
+  TabsShopRoute: typeof TabsShopRoute
 }
 
 const TabsRouteChildren: TabsRouteChildren = {
   TabsMarketplaceRoute: TabsMarketplaceRoute,
+  TabsSavedRoute: TabsSavedRoute,
+  TabsShopRoute: TabsShopRoute,
 }
 
 const TabsRouteWithChildren = TabsRoute._addFileChildren(TabsRouteChildren)
@@ -205,7 +227,6 @@ const rootRouteChildren: RootRouteChildren = {
   AboutRoute: AboutRoute,
   CommunityRoute: CommunityRoute,
   LoginRoute: LoginRoute,
-  ShopRoute: ShopRoute,
   AdminWaitlistRoute: AdminWaitlistRoute,
 }
 export const routeTree = rootRouteImport

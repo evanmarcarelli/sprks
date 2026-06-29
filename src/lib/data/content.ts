@@ -85,7 +85,7 @@ export const FEED: FeedItem[] = [
     count: 6,
     covers: [
       img("photo-1545454675-3531b543be5d"),
-      img("photo-1610904853820-3a8e1a3a8e8a"),
+      img("photo-1545454675-3531b543be5d"),
       img("photo-1593697821028-7cc59cfd7399"),
     ],
     category: "amplifiers",
@@ -105,7 +105,7 @@ export const FEED: FeedItem[] = [
     title: "Chord Qutest, three years in",
     source: "Darko.Audio",
     rating: 4.8,
-    cover: img("photo-1610904853820-3a8e1a3a8e8a"),
+    cover: img("photo-1545454675-3531b543be5d"),
     excerpt:
       "Still the easiest standalone DAC recommendation under two grand. Filter choice matters more than people admit.",
     category: "dacs",
@@ -117,7 +117,7 @@ export const FEED: FeedItem[] = [
     subtitle: "All-in-one, separates, and Roon ready",
     count: 9,
     covers: [
-      img("photo-1610904853820-3a8e1a3a8e8a"),
+      img("photo-1545454675-3531b543be5d"),
       img("photo-1545454675-3531b543be5d"),
       img("photo-1593697821028-7cc59cfd7399"),
     ],
@@ -128,7 +128,7 @@ export const FEED: FeedItem[] = [
     id: "r-cable",
     title: "Cable myths vs measured truths",
     creator: "@measure.first",
-    cover: img("photo-1606213813604-9b6db347c1a2"),
+    cover: img("photo-1593697821028-7cc59cfd7399"),
     duration: "3:12",
     category: "cables",
   },
@@ -149,7 +149,7 @@ export const FEED: FeedItem[] = [
     covers: [
       img("photo-1593697821028-7cc59cfd7399"),
       img("photo-1545454675-3531b543be5d"),
-      img("photo-1610904853820-3a8e1a3a8e8a"),
+      img("photo-1545454675-3531b543be5d"),
     ],
     category: "accessories",
   },
@@ -159,7 +159,7 @@ export const FEED: FeedItem[] = [
     title: "Buchardt A500 long-term review",
     source: "Darko.Audio",
     rating: 4.6,
-    cover: img("photo-1610904853820-3a8e1a3a8e8a"),
+    cover: img("photo-1545454675-3531b543be5d"),
     excerpt:
       "Twelve months in: still the easiest recommendation for one-box wireless hi-fi under five grand.",
     category: "speakers",

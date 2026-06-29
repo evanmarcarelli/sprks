@@ -14,8 +14,8 @@ const I = {
   knobs: "photo-1558137623-ce933996c730",
   cans: "photo-1505740420928-5e560c06d30e",
   iem: "photo-1583394838336-acd977736f90",
-  cable: "photo-1606213813604-9b6db347c1a2",
-  rackBox: "photo-1610904853820-3a8e1a3a8e8a",
+  cable: "photo-1593697821028-7cc59cfd7399",
+  rackBox: "photo-1545454675-3531b543be5d",
 };
 
 type L = Speaker;

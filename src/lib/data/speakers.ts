@@ -49,7 +49,7 @@ export const SPEAKERS: Speaker[] = [
     roomSize: "Large",
     localPickup: false,
     verified: true,
-    image: img("photo-1610904853820-3a8e1a3a8e8a"),
+    image: img("photo-1545454675-3531b543be5d"),
     gallery: [img("photo-1545454675-3531b543be5d"), img("photo-1558137623-ce933996c730")],
     description:
       "A faithful reissue of the legendary three-way acoustic suspension floorstander. Effortless, room-filling sound with a vintage soul.",
@@ -77,7 +77,7 @@ export const SPEAKERS: Speaker[] = [
     localPickup: true,
     verified: true,
     image: img("photo-1545454675-3531b543be5d"),
-    gallery: [img("photo-1558137623-ce933996c730"), img("photo-1610904853820-3a8e1a3a8e8a")],
+    gallery: [img("photo-1558137623-ce933996c730"), img("photo-1545454675-3531b543be5d")],
     description:
       "Uni-Q driver with Metamaterial Absorption Technology. Pinpoint imaging in a compact, room-friendly cabinet.",
     specs: {
@@ -157,7 +157,7 @@ export const SPEAKERS: Speaker[] = [
     roomSize: "Medium",
     localPickup: false,
     verified: true,
-    image: img("photo-1610904853820-3a8e1a3a8e8a"),
+    image: img("photo-1545454675-3531b543be5d"),
     gallery: [img("photo-1545454675-3531b543be5d")],
     description:
       "Fully active wireless monitors with onboard DSP and room correction. Plug, calibrate, listen.",
@@ -212,7 +212,7 @@ export const SPEAKERS: Speaker[] = [
     localPickup: false,
     verified: true,
     image: img("photo-1558137623-ce933996c730"),
-    gallery: [img("photo-1610904853820-3a8e1a3a8e8a")],
+    gallery: [img("photo-1545454675-3531b543be5d")],
     description:
       "Three-way floorstander with beryllium inverted dome tweeter. Effortless dynamics and razor-sharp imaging.",
     specs: {
@@ -320,7 +320,7 @@ export const SPEAKERS: Speaker[] = [
     roomSize: "Large",
     localPickup: true,
     verified: false,
-    image: img("photo-1610904853820-3a8e1a3a8e8a"),
+    image: img("photo-1545454675-3531b543be5d"),
     gallery: [img("photo-1545454675-3531b543be5d")],
     description:
       "Two years old, well-cared-for pair. Minor scuff on one cabinet edge.",
