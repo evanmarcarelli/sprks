@@ -1,8 +1,10 @@
 import { AnimatePresence, animate, motion, useMotionValue, useTransform } from "framer-motion";
 import { useMemo, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
 import { Heart, X, ChevronUp, BadgeCheck } from "lucide-react";
 import type { Speaker } from "@/lib/data/speakers";
 import { ALL_LISTINGS, listingCategory } from "@/lib/data/listings";
+import { fetchRemoteListings } from "@/lib/data/remote-listings";
 import { getCategory, type CategoryId } from "@/lib/catalog/categories";
 import { useStore, type Filters } from "@/lib/store";
 import { rankListings } from "@/lib/personalization/selectors";
@@ -26,15 +28,17 @@ export function SwipeDeck({
   category?: CategoryId | null;
 }) {
   const { saved, passed, filters, profile, toggleSave, pass, resetDeck } = useStore();
+  const { data: remote = [] } = useQuery({ queryKey: ["listings"], queryFn: fetchRemoteListings });
 
   const deck = useMemo(() => {
+    const base = [...remote, ...ALL_LISTINGS];
     const source = category
-      ? ALL_LISTINGS.filter((l) => listingCategory(l) === category)
-      : ALL_LISTINGS;
+      ? base.filter((l) => listingCategory(l) === category)
+      : base;
     const filtered = applyFilters(source, filters);
     const personalized = rankListings(filtered, profile);
     return personalized.filter((s) => !passed.includes(s.id) && !saved.includes(s.id));
-  }, [filters, passed, saved, category, profile]);
+  }, [filters, passed, saved, category, profile, remote]);
 
   if (deck.length === 0) {
     return <EmptyDeck onReset={resetDeck} />;

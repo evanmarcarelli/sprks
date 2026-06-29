@@ -3,7 +3,9 @@ import { zodValidator, fallback } from "@tanstack/zod-adapter";
 import { z } from "zod";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Search, SlidersHorizontal, ArrowUpDown, X, Store as StoreIcon } from "lucide-react";
-import { ALL_LISTINGS, byCategory, listingCategory } from "@/lib/data/listings";
+import { useQuery } from "@tanstack/react-query";
+import { ALL_LISTINGS, listingCategory } from "@/lib/data/listings";
+import { fetchRemoteListings } from "@/lib/data/remote-listings";
 import type { Speaker } from "@/lib/data/speakers";
 import { DEFAULT_FILTERS, useStore } from "@/lib/store";
 import { DetailDrawer } from "@/components/detail-drawer";
@@ -52,6 +54,10 @@ function MarketplaceTab() {
   const navigate = useNavigate({ from: "/marketplace" });
   const { filters } = useStore();
 
+  // Real user-created listings from Supabase, merged ahead of the mock catalog.
+  const { data: remote = [] } = useQuery({ queryKey: ["listings"], queryFn: fetchRemoteListings });
+  const allListings = useMemo(() => [...remote, ...ALL_LISTINGS], [remote]);
+
   const [query, setQuery] = useState(q);
   const [committed, setCommitted] = useState(q);
   const [searchActive, setSearchActive] = useState(focus === 1);
@@ -91,7 +97,9 @@ function MarketplaceTab() {
   const activeQuery = committed.trim().toLowerCase();
 
   const filtered = useMemo(() => {
-    let list: Speaker[] = activeCat ? byCategory(activeCat) : ALL_LISTINGS;
+    let list: Speaker[] = activeCat
+      ? allListings.filter((s) => listingCategory(s) === activeCat)
+      : allListings;
 
     list = list.filter((s) => {
       if (filters.priceMax < DEFAULT_FILTERS.priceMax && s.price > filters.priceMax) return false;
@@ -134,7 +142,7 @@ function MarketplaceTab() {
     }
 
     return list;
-  }, [filters, activeCat, activeSub, activeQuery, sort]);
+  }, [filters, activeCat, activeSub, activeQuery, sort, allListings]);
 
   const inResultsMode = !!(activeQuery || activeSub || activeCat);
 
@@ -234,7 +242,7 @@ function MarketplaceTab() {
             query={committed}
           />
         ) : (
-          <LandingView onOpen={setDetail} onPickCat={(id) => setActiveCat(id)} />
+          <LandingView remote={remote} onOpen={setDetail} onPickCat={(id) => setActiveCat(id)} />
         )}
       </div>
 
@@ -275,9 +283,11 @@ function matchesSubcategory(s: Speaker, sub: string): boolean {
 }
 
 function LandingView({
+  remote,
   onOpen,
   onPickCat,
 }: {
+  remote: Speaker[];
   onOpen: (s: Speaker) => void;
   onPickCat: (c: CategoryId) => void;
 }) {
@@ -290,6 +300,19 @@ function LandingView({
   );
   return (
     <div className="space-y-7">
+      {remote.length > 0 && (
+        <section>
+          <h2 className="mb-2.5 text-[11px] uppercase tracking-[0.18em] text-silver">
+            Just listed
+          </h2>
+          <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
+            {remote.slice(0, 10).map((s) => (
+              <MarketplaceListingCard key={s.id} speaker={s} onOpen={() => onOpen(s)} />
+            ))}
+          </div>
+        </section>
+      )}
+
       <section>
         <h2 className="mb-2.5 text-[11px] uppercase tracking-[0.18em] text-muted-foreground">
           Featured across the market

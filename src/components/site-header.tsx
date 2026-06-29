@@ -4,6 +4,7 @@ import { Logo } from "@/components/logo";
 const nav = [
   { label: "Discover", to: "/shop" },
   { label: "Marketplace", to: "/marketplace" },
+  { label: "Sell", to: "/sell" },
   { label: "Saved", to: "/saved" },
   { label: "About", to: "/about" },
   { label: "Community", to: "/community" },

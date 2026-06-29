@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as WelcomeRouteImport } from './routes/welcome'
+import { Route as SellRouteImport } from './routes/sell'
 import { Route as OnboardingRouteImport } from './routes/onboarding'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as CommunityRouteImport } from './routes/community'
@@ -32,6 +33,11 @@ import { Route as TabsMarketplaceRouteImport } from './routes/_tabs.marketplace'
 const WelcomeRoute = WelcomeRouteImport.update({
   id: '/welcome',
   path: '/welcome',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SellRoute = SellRouteImport.update({
+  id: '/sell',
+  path: '/sell',
   getParentRoute: () => rootRouteImport,
 } as any)
 const OnboardingRoute = OnboardingRouteImport.update({
@@ -130,6 +136,7 @@ export interface FileRoutesByFullPath {
   '/community': typeof CommunityRoute
   '/login': typeof LoginRoute
   '/onboarding': typeof OnboardingRouteWithChildren
+  '/sell': typeof SellRoute
   '/welcome': typeof WelcomeRoute
   '/marketplace': typeof TabsMarketplaceRoute
   '/saved': typeof TabsSavedRoute
@@ -150,6 +157,7 @@ export interface FileRoutesByTo {
   '/community': typeof CommunityRoute
   '/login': typeof LoginRoute
   '/onboarding': typeof OnboardingRouteWithChildren
+  '/sell': typeof SellRoute
   '/welcome': typeof WelcomeRoute
   '/marketplace': typeof TabsMarketplaceRoute
   '/saved': typeof TabsSavedRoute
@@ -172,6 +180,7 @@ export interface FileRoutesById {
   '/community': typeof CommunityRoute
   '/login': typeof LoginRoute
   '/onboarding': typeof OnboardingRouteWithChildren
+  '/sell': typeof SellRoute
   '/welcome': typeof WelcomeRoute
   '/_tabs/marketplace': typeof TabsMarketplaceRoute
   '/_tabs/saved': typeof TabsSavedRoute
@@ -194,6 +203,7 @@ export interface FileRouteTypes {
     | '/community'
     | '/login'
     | '/onboarding'
+    | '/sell'
     | '/welcome'
     | '/marketplace'
     | '/saved'
@@ -214,6 +224,7 @@ export interface FileRouteTypes {
     | '/community'
     | '/login'
     | '/onboarding'
+    | '/sell'
     | '/welcome'
     | '/marketplace'
     | '/saved'
@@ -235,6 +246,7 @@ export interface FileRouteTypes {
     | '/community'
     | '/login'
     | '/onboarding'
+    | '/sell'
     | '/welcome'
     | '/_tabs/marketplace'
     | '/_tabs/saved'
@@ -257,6 +269,7 @@ export interface RootRouteChildren {
   CommunityRoute: typeof CommunityRoute
   LoginRoute: typeof LoginRoute
   OnboardingRoute: typeof OnboardingRouteWithChildren
+  SellRoute: typeof SellRoute
   WelcomeRoute: typeof WelcomeRoute
   AdminWaitlistRoute: typeof AdminWaitlistRoute
 }
@@ -268,6 +281,13 @@ declare module '@tanstack/react-router' {
       path: '/welcome'
       fullPath: '/welcome'
       preLoaderRoute: typeof WelcomeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sell': {
+      id: '/sell'
+      path: '/sell'
+      fullPath: '/sell'
+      preLoaderRoute: typeof SellRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/onboarding': {
@@ -446,6 +466,7 @@ const rootRouteChildren: RootRouteChildren = {
   CommunityRoute: CommunityRoute,
   LoginRoute: LoginRoute,
   OnboardingRoute: OnboardingRouteWithChildren,
+  SellRoute: SellRoute,
   WelcomeRoute: WelcomeRoute,
   AdminWaitlistRoute: AdminWaitlistRoute,
 }
