@@ -100,7 +100,13 @@ function RootComponent() {
   // Product routes live under the pathless `_tabs` layout, which renders its own
   // mobile shell + tab bar. Skip the marketing header/footer for those.
   const isAppRoute = useRouterState({
-    select: (s) => s.matches.some((m) => m.routeId.startsWith("/_tabs")),
+    select: (s) =>
+      s.matches.some(
+        (m) =>
+          m.routeId.startsWith("/_tabs") ||
+          m.routeId === "/welcome" ||
+          m.routeId.startsWith("/onboarding"),
+      ),
   });
   return (
     <QueryClientProvider client={queryClient}>

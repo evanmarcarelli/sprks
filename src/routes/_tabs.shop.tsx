@@ -1,4 +1,4 @@
-import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
 import { motion } from "framer-motion";
 import { Search, SlidersHorizontal, X } from "lucide-react";
@@ -81,9 +81,16 @@ function DiscoverTab() {
             <p className="text-[10.5px] uppercase tracking-[0.28em] text-muted-foreground">For you</p>
             <h1 className="font-display text-[34px] leading-none">Today's picks</h1>
           </div>
-          <div className="text-silver">
+          <Link
+            to="/welcome"
+            className="flex flex-col items-end gap-1 text-silver"
+            aria-label="Personalize your picks"
+          >
             <Waveform className="h-5 w-20" bars={22} />
-          </div>
+            <span className="text-[9px] uppercase tracking-[0.2em] text-muted-foreground">
+              Personalize
+            </span>
+          </Link>
         </div>
 
         <div className="mt-4 flex items-center gap-2">

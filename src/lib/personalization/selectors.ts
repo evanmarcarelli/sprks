@@ -94,7 +94,7 @@ export function defaultPriceMax(p: BuyerProfile): number | null {
 
 export function routeAfterOnboarding(
   p: BuyerProfile,
-): { to: "/" | "/marketplace" | "/saved" | "/discover" } {
+): { to: "/shop" | "/marketplace" | "/saved" } {
   switch (p.primary_intent) {
     case "buy":
       return { to: "/marketplace" };
@@ -102,10 +102,11 @@ export function routeAfterOnboarding(
       return { to: "/saved" };
     case "build":
     case "browse":
-      return { to: "/discover" };
+      // Discover swipe home lives at /shop in the website.
+      return { to: "/shop" };
     case "sell":
     case null:
     default:
-      return { to: "/" };
+      return { to: "/shop" };
   }
 }

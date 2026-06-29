@@ -9,16 +9,36 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as WelcomeRouteImport } from './routes/welcome'
+import { Route as OnboardingRouteImport } from './routes/onboarding'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as CommunityRouteImport } from './routes/community'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as TabsRouteImport } from './routes/_tabs'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as OnboardingSubcategoriesRouteImport } from './routes/onboarding.subcategories'
+import { Route as OnboardingSetupRouteImport } from './routes/onboarding.setup'
+import { Route as OnboardingPreviewRouteImport } from './routes/onboarding.preview'
+import { Route as OnboardingIntentRouteImport } from './routes/onboarding.intent'
+import { Route as OnboardingExclusionsRouteImport } from './routes/onboarding.exclusions'
+import { Route as OnboardingCategoriesRouteImport } from './routes/onboarding.categories'
+import { Route as OnboardingBudgetRouteImport } from './routes/onboarding.budget'
+import { Route as OnboardingBrandsRouteImport } from './routes/onboarding.brands'
 import { Route as AdminWaitlistRouteImport } from './routes/admin.waitlist'
 import { Route as TabsShopRouteImport } from './routes/_tabs.shop'
 import { Route as TabsSavedRouteImport } from './routes/_tabs.saved'
 import { Route as TabsMarketplaceRouteImport } from './routes/_tabs.marketplace'
 
+const WelcomeRoute = WelcomeRouteImport.update({
+  id: '/welcome',
+  path: '/welcome',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const OnboardingRoute = OnboardingRouteImport.update({
+  id: '/onboarding',
+  path: '/onboarding',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const LoginRoute = LoginRouteImport.update({
   id: '/login',
   path: '/login',
@@ -42,6 +62,46 @@ const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
+} as any)
+const OnboardingSubcategoriesRoute = OnboardingSubcategoriesRouteImport.update({
+  id: '/subcategories',
+  path: '/subcategories',
+  getParentRoute: () => OnboardingRoute,
+} as any)
+const OnboardingSetupRoute = OnboardingSetupRouteImport.update({
+  id: '/setup',
+  path: '/setup',
+  getParentRoute: () => OnboardingRoute,
+} as any)
+const OnboardingPreviewRoute = OnboardingPreviewRouteImport.update({
+  id: '/preview',
+  path: '/preview',
+  getParentRoute: () => OnboardingRoute,
+} as any)
+const OnboardingIntentRoute = OnboardingIntentRouteImport.update({
+  id: '/intent',
+  path: '/intent',
+  getParentRoute: () => OnboardingRoute,
+} as any)
+const OnboardingExclusionsRoute = OnboardingExclusionsRouteImport.update({
+  id: '/exclusions',
+  path: '/exclusions',
+  getParentRoute: () => OnboardingRoute,
+} as any)
+const OnboardingCategoriesRoute = OnboardingCategoriesRouteImport.update({
+  id: '/categories',
+  path: '/categories',
+  getParentRoute: () => OnboardingRoute,
+} as any)
+const OnboardingBudgetRoute = OnboardingBudgetRouteImport.update({
+  id: '/budget',
+  path: '/budget',
+  getParentRoute: () => OnboardingRoute,
+} as any)
+const OnboardingBrandsRoute = OnboardingBrandsRouteImport.update({
+  id: '/brands',
+  path: '/brands',
+  getParentRoute: () => OnboardingRoute,
 } as any)
 const AdminWaitlistRoute = AdminWaitlistRouteImport.update({
   id: '/admin/waitlist',
@@ -69,20 +129,40 @@ export interface FileRoutesByFullPath {
   '/about': typeof AboutRoute
   '/community': typeof CommunityRoute
   '/login': typeof LoginRoute
+  '/onboarding': typeof OnboardingRouteWithChildren
+  '/welcome': typeof WelcomeRoute
   '/marketplace': typeof TabsMarketplaceRoute
   '/saved': typeof TabsSavedRoute
   '/shop': typeof TabsShopRoute
   '/admin/waitlist': typeof AdminWaitlistRoute
+  '/onboarding/brands': typeof OnboardingBrandsRoute
+  '/onboarding/budget': typeof OnboardingBudgetRoute
+  '/onboarding/categories': typeof OnboardingCategoriesRoute
+  '/onboarding/exclusions': typeof OnboardingExclusionsRoute
+  '/onboarding/intent': typeof OnboardingIntentRoute
+  '/onboarding/preview': typeof OnboardingPreviewRoute
+  '/onboarding/setup': typeof OnboardingSetupRoute
+  '/onboarding/subcategories': typeof OnboardingSubcategoriesRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/community': typeof CommunityRoute
   '/login': typeof LoginRoute
+  '/onboarding': typeof OnboardingRouteWithChildren
+  '/welcome': typeof WelcomeRoute
   '/marketplace': typeof TabsMarketplaceRoute
   '/saved': typeof TabsSavedRoute
   '/shop': typeof TabsShopRoute
   '/admin/waitlist': typeof AdminWaitlistRoute
+  '/onboarding/brands': typeof OnboardingBrandsRoute
+  '/onboarding/budget': typeof OnboardingBudgetRoute
+  '/onboarding/categories': typeof OnboardingCategoriesRoute
+  '/onboarding/exclusions': typeof OnboardingExclusionsRoute
+  '/onboarding/intent': typeof OnboardingIntentRoute
+  '/onboarding/preview': typeof OnboardingPreviewRoute
+  '/onboarding/setup': typeof OnboardingSetupRoute
+  '/onboarding/subcategories': typeof OnboardingSubcategoriesRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -91,10 +171,20 @@ export interface FileRoutesById {
   '/about': typeof AboutRoute
   '/community': typeof CommunityRoute
   '/login': typeof LoginRoute
+  '/onboarding': typeof OnboardingRouteWithChildren
+  '/welcome': typeof WelcomeRoute
   '/_tabs/marketplace': typeof TabsMarketplaceRoute
   '/_tabs/saved': typeof TabsSavedRoute
   '/_tabs/shop': typeof TabsShopRoute
   '/admin/waitlist': typeof AdminWaitlistRoute
+  '/onboarding/brands': typeof OnboardingBrandsRoute
+  '/onboarding/budget': typeof OnboardingBudgetRoute
+  '/onboarding/categories': typeof OnboardingCategoriesRoute
+  '/onboarding/exclusions': typeof OnboardingExclusionsRoute
+  '/onboarding/intent': typeof OnboardingIntentRoute
+  '/onboarding/preview': typeof OnboardingPreviewRoute
+  '/onboarding/setup': typeof OnboardingSetupRoute
+  '/onboarding/subcategories': typeof OnboardingSubcategoriesRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -103,20 +193,40 @@ export interface FileRouteTypes {
     | '/about'
     | '/community'
     | '/login'
+    | '/onboarding'
+    | '/welcome'
     | '/marketplace'
     | '/saved'
     | '/shop'
     | '/admin/waitlist'
+    | '/onboarding/brands'
+    | '/onboarding/budget'
+    | '/onboarding/categories'
+    | '/onboarding/exclusions'
+    | '/onboarding/intent'
+    | '/onboarding/preview'
+    | '/onboarding/setup'
+    | '/onboarding/subcategories'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/about'
     | '/community'
     | '/login'
+    | '/onboarding'
+    | '/welcome'
     | '/marketplace'
     | '/saved'
     | '/shop'
     | '/admin/waitlist'
+    | '/onboarding/brands'
+    | '/onboarding/budget'
+    | '/onboarding/categories'
+    | '/onboarding/exclusions'
+    | '/onboarding/intent'
+    | '/onboarding/preview'
+    | '/onboarding/setup'
+    | '/onboarding/subcategories'
   id:
     | '__root__'
     | '/'
@@ -124,10 +234,20 @@ export interface FileRouteTypes {
     | '/about'
     | '/community'
     | '/login'
+    | '/onboarding'
+    | '/welcome'
     | '/_tabs/marketplace'
     | '/_tabs/saved'
     | '/_tabs/shop'
     | '/admin/waitlist'
+    | '/onboarding/brands'
+    | '/onboarding/budget'
+    | '/onboarding/categories'
+    | '/onboarding/exclusions'
+    | '/onboarding/intent'
+    | '/onboarding/preview'
+    | '/onboarding/setup'
+    | '/onboarding/subcategories'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -136,11 +256,27 @@ export interface RootRouteChildren {
   AboutRoute: typeof AboutRoute
   CommunityRoute: typeof CommunityRoute
   LoginRoute: typeof LoginRoute
+  OnboardingRoute: typeof OnboardingRouteWithChildren
+  WelcomeRoute: typeof WelcomeRoute
   AdminWaitlistRoute: typeof AdminWaitlistRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/welcome': {
+      id: '/welcome'
+      path: '/welcome'
+      fullPath: '/welcome'
+      preLoaderRoute: typeof WelcomeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/onboarding': {
+      id: '/onboarding'
+      path: '/onboarding'
+      fullPath: '/onboarding'
+      preLoaderRoute: typeof OnboardingRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/login': {
       id: '/login'
       path: '/login'
@@ -175,6 +311,62 @@ declare module '@tanstack/react-router' {
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/onboarding/subcategories': {
+      id: '/onboarding/subcategories'
+      path: '/subcategories'
+      fullPath: '/onboarding/subcategories'
+      preLoaderRoute: typeof OnboardingSubcategoriesRouteImport
+      parentRoute: typeof OnboardingRoute
+    }
+    '/onboarding/setup': {
+      id: '/onboarding/setup'
+      path: '/setup'
+      fullPath: '/onboarding/setup'
+      preLoaderRoute: typeof OnboardingSetupRouteImport
+      parentRoute: typeof OnboardingRoute
+    }
+    '/onboarding/preview': {
+      id: '/onboarding/preview'
+      path: '/preview'
+      fullPath: '/onboarding/preview'
+      preLoaderRoute: typeof OnboardingPreviewRouteImport
+      parentRoute: typeof OnboardingRoute
+    }
+    '/onboarding/intent': {
+      id: '/onboarding/intent'
+      path: '/intent'
+      fullPath: '/onboarding/intent'
+      preLoaderRoute: typeof OnboardingIntentRouteImport
+      parentRoute: typeof OnboardingRoute
+    }
+    '/onboarding/exclusions': {
+      id: '/onboarding/exclusions'
+      path: '/exclusions'
+      fullPath: '/onboarding/exclusions'
+      preLoaderRoute: typeof OnboardingExclusionsRouteImport
+      parentRoute: typeof OnboardingRoute
+    }
+    '/onboarding/categories': {
+      id: '/onboarding/categories'
+      path: '/categories'
+      fullPath: '/onboarding/categories'
+      preLoaderRoute: typeof OnboardingCategoriesRouteImport
+      parentRoute: typeof OnboardingRoute
+    }
+    '/onboarding/budget': {
+      id: '/onboarding/budget'
+      path: '/budget'
+      fullPath: '/onboarding/budget'
+      preLoaderRoute: typeof OnboardingBudgetRouteImport
+      parentRoute: typeof OnboardingRoute
+    }
+    '/onboarding/brands': {
+      id: '/onboarding/brands'
+      path: '/brands'
+      fullPath: '/onboarding/brands'
+      preLoaderRoute: typeof OnboardingBrandsRouteImport
+      parentRoute: typeof OnboardingRoute
     }
     '/admin/waitlist': {
       id: '/admin/waitlist'
@@ -221,12 +413,40 @@ const TabsRouteChildren: TabsRouteChildren = {
 
 const TabsRouteWithChildren = TabsRoute._addFileChildren(TabsRouteChildren)
 
+interface OnboardingRouteChildren {
+  OnboardingBrandsRoute: typeof OnboardingBrandsRoute
+  OnboardingBudgetRoute: typeof OnboardingBudgetRoute
+  OnboardingCategoriesRoute: typeof OnboardingCategoriesRoute
+  OnboardingExclusionsRoute: typeof OnboardingExclusionsRoute
+  OnboardingIntentRoute: typeof OnboardingIntentRoute
+  OnboardingPreviewRoute: typeof OnboardingPreviewRoute
+  OnboardingSetupRoute: typeof OnboardingSetupRoute
+  OnboardingSubcategoriesRoute: typeof OnboardingSubcategoriesRoute
+}
+
+const OnboardingRouteChildren: OnboardingRouteChildren = {
+  OnboardingBrandsRoute: OnboardingBrandsRoute,
+  OnboardingBudgetRoute: OnboardingBudgetRoute,
+  OnboardingCategoriesRoute: OnboardingCategoriesRoute,
+  OnboardingExclusionsRoute: OnboardingExclusionsRoute,
+  OnboardingIntentRoute: OnboardingIntentRoute,
+  OnboardingPreviewRoute: OnboardingPreviewRoute,
+  OnboardingSetupRoute: OnboardingSetupRoute,
+  OnboardingSubcategoriesRoute: OnboardingSubcategoriesRoute,
+}
+
+const OnboardingRouteWithChildren = OnboardingRoute._addFileChildren(
+  OnboardingRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   TabsRoute: TabsRouteWithChildren,
   AboutRoute: AboutRoute,
   CommunityRoute: CommunityRoute,
   LoginRoute: LoginRoute,
+  OnboardingRoute: OnboardingRouteWithChildren,
+  WelcomeRoute: WelcomeRoute,
   AdminWaitlistRoute: AdminWaitlistRoute,
 }
 export const routeTree = rootRouteImport
