@@ -29,7 +29,7 @@ export function ComparePanel({
             onClick={onClose}
           />
           <motion.div
-            className="fixed inset-x-0 bottom-0 z-[60] mx-auto max-h-[92vh] w-full max-w-[440px] overflow-hidden rounded-t-3xl bg-surface"
+            className="fixed inset-x-0 bottom-0 z-[60] mx-auto max-h-[92vh] w-full max-w-2xl overflow-hidden rounded-t-3xl bg-surface"
             initial={{ y: "100%" }}
             animate={{ y: 0 }}
             exit={{ y: "100%" }}

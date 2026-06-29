@@ -59,7 +59,7 @@ function DiscoverTab() {
     navigate({ to: "/marketplace", search: { q: "", cat: "", sub: "", focus: 1 } });
 
   return (
-    <div className="relative flex h-svh flex-col overflow-hidden pt-[env(safe-area-inset-top)]">
+    <div className="relative mx-auto w-full max-w-3xl px-5">
       {/* Subtle silver glow backdrop (site-native; replaces the app's WebGL field) */}
       <div
         aria-hidden
@@ -74,7 +74,7 @@ function DiscoverTab() {
         initial={{ opacity: 0, y: 6 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, ease }}
-        className="relative z-10 px-5 pt-5"
+        className="relative z-10 pt-8"
       >
         <div className="flex items-center justify-between">
           <div className="space-y-1.5">
@@ -135,7 +135,7 @@ function DiscoverTab() {
         initial={{ opacity: 0, y: 18, scale: 0.985 }}
         animate={{ opacity: 1, y: 0, scale: 1 }}
         transition={{ duration: 0.8, ease, delay: 0.12 }}
-        className="relative z-10 mt-4 flex-1 px-5 pb-28"
+        className="relative z-10 mx-auto mt-6 h-[calc(100vh-19rem)] min-h-[460px] w-full max-w-[520px] pb-6"
       >
         <SwipeDeck onOpenDetail={setDetail} category={category} />
       </motion.div>

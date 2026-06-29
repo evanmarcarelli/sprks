@@ -8,14 +8,17 @@ export function Waveform({ className = "", bars = 28 }: { className?: string; ba
     >
       {Array.from({ length: bars }).map((_, i) => {
         const t = i / (bars - 1);
-        const h = 4 + Math.abs(Math.sin(t * Math.PI * 2.4)) * 18 + Math.sin(i) * 2;
+        // Round to fixed precision so server and client render identical strings
+        // (avoids an SSR hydration mismatch from Math.sin precision differences).
+        const round = (n: number) => Math.round(n * 1000) / 1000;
+        const h = round(4 + Math.abs(Math.sin(t * Math.PI * 2.4)) * 18 + Math.sin(i) * 2);
         return (
           <rect
             key={i}
             x={i * 4}
-            y={12 - h / 2}
+            y={round(12 - h / 2)}
             width={2}
-            height={Math.max(2, h)}
+            height={round(Math.max(2, h))}
             rx={1}
             fill="currentColor"
           />

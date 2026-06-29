@@ -41,7 +41,7 @@ export function SortSheet({
             onClick={onClose}
           />
           <motion.div
-            className="fixed inset-x-0 bottom-0 z-50 mx-auto w-full max-w-[440px] overflow-hidden rounded-t-3xl bg-surface"
+            className="fixed inset-x-0 bottom-0 z-50 mx-auto w-full max-w-lg overflow-hidden rounded-t-3xl bg-surface"
             initial={{ y: "100%" }}
             animate={{ y: 0 }}
             exit={{ y: "100%" }}

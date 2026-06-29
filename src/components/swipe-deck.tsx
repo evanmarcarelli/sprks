@@ -226,23 +226,23 @@ function SwipeCard({
         </div>
 
         {isTop && (
-          <div className="absolute right-3 top-3 flex flex-col gap-2">
+          <div className="absolute right-3.5 top-3.5 flex flex-col gap-2.5">
             <button
               onClick={onPass}
-              className="grid h-10 w-10 place-items-center rounded-full border border-white/25 bg-black/35 text-white backdrop-blur transition active:scale-95"
+              className="grid h-12 w-12 place-items-center rounded-full border border-white/25 bg-black/35 text-white backdrop-blur transition hover:bg-black/55 active:scale-95"
               aria-label="Pass"
             >
-              <X className="h-4 w-4" />
+              <X className="h-5 w-5" />
             </button>
             <button
               onClick={() => {
                 setSavedPulse(true);
                 setTimeout(onSave, 180);
               }}
-              className="grid h-10 w-10 place-items-center rounded-full bg-white text-black shadow-lg transition active:scale-95"
+              className="grid h-12 w-12 place-items-center rounded-full bg-white text-black shadow-lg transition hover:bg-white/90 active:scale-95"
               aria-label="Save"
             >
-              <Heart className="h-4 w-4" />
+              <Heart className="h-5 w-5" />
             </button>
           </div>
         )}

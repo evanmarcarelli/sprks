@@ -2,7 +2,9 @@ import { Link } from "@tanstack/react-router";
 import { Logo } from "@/components/logo";
 
 const nav = [
-  { label: "Shop", to: "/shop" },
+  { label: "Discover", to: "/shop" },
+  { label: "Marketplace", to: "/marketplace" },
+  { label: "Saved", to: "/saved" },
   { label: "About", to: "/about" },
   { label: "Community", to: "/community" },
 ] as const;
@@ -15,7 +17,7 @@ export function SiteHeader() {
           <Logo className="h-7 w-7" />
           <span className="font-serif text-xl tracking-[0.02em]">Spkrs</span>
         </Link>
-        <nav className="hidden md:flex items-center gap-10">
+        <nav className="hidden md:flex items-center gap-7">
           {nav.map((n) => (
             <Link
               key={n.to}

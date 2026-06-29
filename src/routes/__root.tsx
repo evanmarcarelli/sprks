@@ -97,21 +97,19 @@ function RootShell({ children }: { children: ReactNode }) {
 
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
-  // Product routes live under the pathless `_tabs` layout, which renders its own
-  // mobile shell + tab bar. Skip the marketing header/footer for those.
-  const isAppRoute = useRouterState({
+  // Only the immersive onboarding flow (intro animation + taste quiz) hides the
+  // site chrome. Everything else — including the product pages — shares the same
+  // header/footer so you can navigate the whole site from anywhere.
+  const isImmersive = useRouterState({
     select: (s) =>
       s.matches.some(
-        (m) =>
-          m.routeId.startsWith("/_tabs") ||
-          m.routeId === "/welcome" ||
-          m.routeId.startsWith("/onboarding"),
+        (m) => m.routeId === "/welcome" || m.routeId.startsWith("/onboarding"),
       ),
   });
   return (
     <QueryClientProvider client={queryClient}>
       <StoreProvider>
-        {isAppRoute ? (
+        {isImmersive ? (
           <Outlet />
         ) : (
           <div className="flex min-h-screen flex-col">

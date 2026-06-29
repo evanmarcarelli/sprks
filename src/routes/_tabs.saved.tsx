@@ -27,14 +27,14 @@ function SavedTab() {
   const { saved, compare, cart } = useStore();
 
   return (
-    <div className="pt-[env(safe-area-inset-top)]">
-      <header className="px-5 pt-4">
-        <p className="text-[10.5px] uppercase tracking-[0.22em] text-muted-foreground">Library</p>
-        <h1 className="font-display text-3xl leading-tight">Your shortlist.</h1>
+    <div className="mx-auto w-full max-w-7xl px-5 md:px-8">
+      <header className="pt-8">
+        <p className="text-[10.5px] uppercase tracking-[0.22em] text-silver">Library</p>
+        <h1 className="font-display text-4xl leading-tight md:text-5xl">Your shortlist.</h1>
       </header>
 
-      <div className="sticky top-0 z-10 mt-4 bg-background/90 px-4 pb-3 pt-1 backdrop-blur">
-        <div className="grid grid-cols-3 gap-1 rounded-full bg-muted p-1">
+      <div className="sticky top-20 z-10 mt-5 bg-background/90 pb-3 pt-1 backdrop-blur">
+        <div className="grid max-w-md grid-cols-3 gap-1 rounded-full bg-muted p-1">
           <SegBtn active={tab === "saved"} onClick={() => setTab("saved")} count={saved.length}>
             <Heart className="h-3.5 w-3.5" /> Saved
           </SegBtn>
@@ -47,7 +47,7 @@ function SavedTab() {
         </div>
       </div>
 
-      <div className="px-4 pb-8">
+      <div className="pb-16 pt-2">
         {tab === "saved" && <SavedGrid onOpen={setDetail} />}
         {tab === "compare" && <CompareView />}
         {tab === "cart" && <CartView />}
@@ -123,7 +123,7 @@ function SavedGrid({ onOpen }: { onOpen: (s: Speaker) => void }) {
           <h3 className="mb-2 text-[11px] uppercase tracking-[0.18em] text-muted-foreground">
             {getCategory(cat)?.label} · {items.length}
           </h3>
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
             {items.map((s) => (
               <article
                 key={s.id}
@@ -299,7 +299,7 @@ function CartView() {
   }
 
   return (
-    <div className="pt-4">
+    <div className="max-w-2xl pt-4">
       <ul className="space-y-3">
         {items.map((s) => (
           <li key={s.id} className="flex items-center gap-3 rounded-2xl border border-border bg-surface p-3">

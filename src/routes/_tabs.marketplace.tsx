@@ -148,21 +148,21 @@ function MarketplaceTab() {
     : "Search speakers, amps, DACs, brands…";
 
   return (
-    <div className="min-h-svh pt-[env(safe-area-inset-top)]">
-      <header className="px-5 pb-2 pt-4">
+    <div className="mx-auto w-full max-w-7xl px-5 md:px-8">
+      <header className="pb-2 pt-8">
         <div className="flex items-center justify-between">
           <div>
-            <p className="text-[10.5px] uppercase tracking-[0.22em] text-muted-foreground">
+            <p className="text-[10.5px] uppercase tracking-[0.22em] text-silver">
               Shop the market
             </p>
-            <h1 className="font-display text-[32px] leading-none">Marketplace</h1>
+            <h1 className="font-display text-4xl leading-none md:text-5xl">Marketplace</h1>
           </div>
-          <StoreIcon className="h-5 w-5 text-muted-foreground" />
+          <StoreIcon className="h-6 w-6 text-muted-foreground" />
         </div>
       </header>
 
-      {/* Sticky search + category + chip rail */}
-      <div className="sticky top-0 z-30 space-y-3 bg-background/95 px-5 pb-2 pt-3 backdrop-blur">
+      {/* Sticky search + category + chip rail (sits below the 5rem site header) */}
+      <div className="sticky top-20 z-30 space-y-3 bg-background/95 pb-3 pt-3 backdrop-blur">
         <div className="flex items-center gap-2">
           <button
             onClick={() => setSearchActive(true)}
@@ -217,7 +217,7 @@ function MarketplaceTab() {
         )}
       </div>
 
-      <div className="px-4 pb-28 pt-3">
+      <div className="pb-20 pt-4">
         {inResultsMode ? (
           <ResultsView
             list={filtered}
@@ -294,7 +294,7 @@ function LandingView({
         <h2 className="mb-2.5 text-[11px] uppercase tracking-[0.18em] text-muted-foreground">
           Featured across the market
         </h2>
-        <div className="grid grid-cols-2 gap-2.5">
+        <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
           {featured.map((s) => (
             <MarketplaceListingCard key={s.id} speaker={s} onOpen={() => onOpen(s)} />
           ))}
@@ -305,7 +305,7 @@ function LandingView({
         <h2 className="mb-2.5 text-[11px] uppercase tracking-[0.18em] text-muted-foreground">
           Browse by category
         </h2>
-        <div className="grid grid-cols-2 gap-2">
+        <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6">
           {CATEGORIES.map((c) => {
             const Icon = c.icon;
             return (
@@ -391,7 +391,7 @@ function ResultsView({
           </p>
         </div>
       ) : (
-        <div className="grid grid-cols-2 gap-2.5">
+        <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
           {list.map((s) => (
             <MarketplaceListingCard key={s.id} speaker={s} onOpen={() => onOpen(s)} />
           ))}
@@ -447,8 +447,8 @@ function SearchOverlay({
   };
 
   return (
-    <div className="fixed inset-0 z-50 mx-auto flex w-full max-w-[440px] flex-col bg-background">
-      <div className="flex items-center gap-2 border-b border-border px-3 py-3 pt-[calc(env(safe-area-inset-top)+12px)]">
+    <div className="fixed inset-0 z-50 flex w-full flex-col bg-background/98 backdrop-blur">
+      <div className="mx-auto flex w-full max-w-3xl items-center gap-2 border-b border-border px-4 py-4">
         <button onClick={onClose} className="px-2 text-sm">
           Cancel
         </button>
@@ -481,7 +481,7 @@ function SearchOverlay({
         </form>
       </div>
 
-      <div className="flex-1 overflow-y-auto px-5 pb-10 pt-4">
+      <div className="mx-auto w-full max-w-3xl flex-1 overflow-y-auto px-5 pb-10 pt-6">
         {live ? (
           <div className="space-y-5">
             {inferred && (
@@ -586,7 +586,7 @@ function SearchOverlay({
               <h4 className="mb-2 text-[11px] uppercase tracking-[0.18em] text-muted-foreground">
                 Browse by category
               </h4>
-              <div className="grid grid-cols-2 gap-2">
+              <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
                 {CATEGORIES.map((c) => {
                   const Icon = c.icon;
                   return (
