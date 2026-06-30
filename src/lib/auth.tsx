@@ -56,6 +56,7 @@ type AuthState = {
     displayName: string,
   ) => Promise<{ error: string | null; needsConfirm: boolean }>;
   signInWithMagicLink: (email: string) => Promise<{ error: string | null }>;
+  signInWithOAuth: (provider: "google" | "apple") => Promise<{ error: string | null }>;
   signOut: () => Promise<void>;
   refreshProfile: () => Promise<void>;
 };
@@ -130,6 +131,18 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     return { error: error?.message ?? null };
   }, []);
 
+  // OAuth (Google / Apple). Requires the provider enabled in the Supabase
+  // dashboard; redirects the browser to the provider and back.
+  const signInWithOAuth = useCallback(async (provider: "google" | "apple") => {
+    const { error } = await supabase.auth.signInWithOAuth({
+      provider,
+      options: {
+        redirectTo: typeof window !== "undefined" ? `${window.location.origin}/` : undefined,
+      },
+    });
+    return { error: error?.message ?? null };
+  }, []);
+
   const signOut = useCallback(async () => {
     await supabase.auth.signOut();
     setProfile(null);
@@ -153,6 +166,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     signIn,
     signUp,
     signInWithMagicLink,
+    signInWithOAuth,
     signOut,
     refreshProfile,
   };

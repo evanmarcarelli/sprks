@@ -1,5 +1,6 @@
 import { createFileRoute, useNavigate, useSearch } from "@tanstack/react-router";
 import { useState } from "react";
+import { Apple } from "lucide-react";
 import { useAuth } from "@/lib/auth";
 
 export const Route = createFileRoute("/login")({
@@ -22,7 +23,7 @@ type Mode = "signin" | "signup";
 function LoginPage() {
   const navigate = useNavigate();
   const { redirect } = useSearch({ from: "/login" });
-  const { signIn, signUp, signInWithMagicLink } = useAuth();
+  const { signIn, signUp, signInWithMagicLink, signInWithOAuth } = useAuth();
 
   const [mode, setMode] = useState<Mode>("signin");
   const [email, setEmail] = useState("");
@@ -32,6 +33,20 @@ function LoginPage() {
   const [error, setError] = useState("");
   const [confirmSent, setConfirmSent] = useState(false);
   const [magicSent, setMagicSent] = useState(false);
+
+  const oauth = async (provider: "google" | "apple") => {
+    if (loading) return;
+    setError("");
+    setLoading(true);
+    try {
+      const { error } = await signInWithOAuth(provider);
+      // On success the browser redirects to the provider; an error means it
+      // isn't enabled in Supabase yet.
+      if (error) setError(error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const sendMagicLink = async () => {
     if (loading) return;
@@ -153,7 +168,32 @@ function LoginPage() {
           </p>
         </div>
 
-        <form className="mt-10 space-y-6" onSubmit={submit}>
+        <div className="mt-8 space-y-3">
+          <button
+            type="button"
+            onClick={() => oauth("apple")}
+            disabled={loading}
+            className="flex w-full items-center justify-center gap-2.5 border border-border py-3.5 text-xs uppercase tracking-[0.2em] hover:border-silver hover:bg-secondary/40 transition disabled:opacity-60"
+          >
+            <Apple className="h-4 w-4" /> Continue with Apple
+          </button>
+          <button
+            type="button"
+            onClick={() => oauth("google")}
+            disabled={loading}
+            className="flex w-full items-center justify-center gap-2.5 border border-border py-3.5 text-xs uppercase tracking-[0.2em] hover:border-silver hover:bg-secondary/40 transition disabled:opacity-60"
+          >
+            <span className="font-serif text-base leading-none">G</span> Continue with Google
+          </button>
+        </div>
+
+        <div className="mt-6 flex items-center gap-3">
+          <div className="h-px flex-1 bg-border" />
+          <span className="text-[10px] uppercase tracking-[0.25em] text-muted-foreground">or</span>
+          <div className="h-px flex-1 bg-border" />
+        </div>
+
+        <form className="mt-6 space-y-6" onSubmit={submit}>
           {mode === "signup" && (
             <Field label="Name">
               <input
