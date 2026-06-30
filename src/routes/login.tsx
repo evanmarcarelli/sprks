@@ -22,7 +22,7 @@ type Mode = "signin" | "signup";
 function LoginPage() {
   const navigate = useNavigate();
   const { redirect } = useSearch({ from: "/login" });
-  const { signIn, signUp } = useAuth();
+  const { signIn, signUp, signInWithMagicLink } = useAuth();
 
   const [mode, setMode] = useState<Mode>("signin");
   const [email, setEmail] = useState("");
@@ -31,6 +31,24 @@ function LoginPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [confirmSent, setConfirmSent] = useState(false);
+  const [magicSent, setMagicSent] = useState(false);
+
+  const sendMagicLink = async () => {
+    if (loading) return;
+    setError("");
+    if (!email.trim()) {
+      setError("Enter your email to get a sign-in link.");
+      return;
+    }
+    setLoading(true);
+    try {
+      const { error } = await signInWithMagicLink(email.trim());
+      if (error) setError(error);
+      else setMagicSent(true);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -71,6 +89,26 @@ function LoginPage() {
       setLoading(false);
     }
   };
+
+  if (magicSent) {
+    return (
+      <div className="relative flex min-h-[calc(100vh-5rem)] items-center justify-center px-6 py-16">
+        <div className="w-full max-w-md glass p-10 text-center">
+          <h1 className="font-serif text-3xl">Check your inbox</h1>
+          <p className="mt-4 text-sm leading-relaxed text-muted-foreground">
+            We sent a one-time sign-in link to <span className="text-foreground">{email}</span>.
+            Click it to sign in — no password needed.
+          </p>
+          <button
+            onClick={() => setMagicSent(false)}
+            className="mt-8 w-full bg-silver-bright text-primary-foreground py-4 text-xs uppercase tracking-[0.3em] hover:opacity-90 transition"
+          >
+            Back
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   if (confirmSent) {
     return (
@@ -164,6 +202,19 @@ function LoginPage() {
                 ? "Sign in"
                 : "Create account"}
           </button>
+
+          {mode === "signin" && (
+            <div className="pt-2 text-center">
+              <button
+                type="button"
+                onClick={sendMagicLink}
+                disabled={loading}
+                className="text-xs uppercase tracking-[0.2em] text-muted-foreground hover:text-foreground transition disabled:opacity-60"
+              >
+                Email me a sign-in link instead
+              </button>
+            </div>
+          )}
         </form>
 
         <p className="mt-8 text-center text-sm text-muted-foreground">

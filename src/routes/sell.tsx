@@ -28,8 +28,8 @@ export const Route = createFileRoute("/sell")({
 function SellPage() {
   const navigate = useNavigate();
   const qc = useQueryClient();
-  const { user, profile, loading: authLoading } = useAuth();
-  const isVerified = profile?.seller_status === "verified";
+  const { user, sellerStatus, isVerifiedSeller, loading: authLoading } = useAuth();
+  const isVerified = isVerifiedSeller;
 
   const [form, setForm] = useState({
     brand: "",
@@ -183,7 +183,7 @@ function SellPage() {
 
       {!isVerified && (
         <div className="mt-7 glass p-5 text-sm leading-relaxed text-muted-foreground">
-          {profile?.seller_status === "pending" ? (
+          {sellerStatus === "pending" ? (
             <>Your seller application is under review. Listings you create now will publish once you're approved.</>
           ) : (
             <>

@@ -12,7 +12,7 @@ export const Route = createFileRoute("/account")({
 });
 
 function AccountPage() {
-  const { user, profile, loading, refreshProfile } = useAuth();
+  const { user, profile, sellerStatus, loading, refreshProfile } = useAuth();
 
   if (loading) {
     return <Centered>Loading…</Centered>;
@@ -33,7 +33,7 @@ function AccountPage() {
     );
   }
 
-  const status = profile?.seller_status ?? "none";
+  const status = sellerStatus;
 
   return (
     <section className="mx-auto max-w-2xl px-8 pt-24 pb-32">

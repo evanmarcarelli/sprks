@@ -1,7 +1,8 @@
-// Real Supabase auth for the website. Provides the signed-in session + the
-// user's `profiles` row (seller status, admin flag) to the whole app via
-// useAuth(). This is the shared identity layer — the same Supabase project
-// backs the app, so a login here is the same account there.
+// Real Supabase auth for the website. Provides the signed-in session plus the
+// user's profile, admin role (from user_roles), and seller-verification status
+// (from seller_verifications) to the whole app via useAuth(). This is the
+// shared identity layer — the same Supabase project backs the app, so a login
+// here is the same account there.
 import {
   createContext,
   useContext,
@@ -13,26 +14,40 @@ import {
 import type { Session, User } from "@supabase/supabase-js";
 import { supabase } from "@/lib/supabase";
 
+// UI-facing seller status, derived from the richer DB enum
+// (not_started / pending_ai_review / pending_manual_review / approved /
+//  rejected / requires_resubmission).
 export type SellerStatus = "none" | "pending" | "verified" | "rejected";
 
 export type Profile = {
   id: string;
   email: string | null;
   display_name: string | null;
-  seller_status: SellerStatus;
-  seller_contact: string | null;
-  seller_proof_links: string[];
-  seller_request_note: string | null;
-  seller_requested_at: string | null;
-  seller_verified_at: string | null;
-  is_admin: boolean;
+  created_at?: string;
 };
+
+function mapSellerStatus(raw: string | null | undefined): SellerStatus {
+  switch (raw) {
+    case "approved":
+      return "verified";
+    case "pending_ai_review":
+    case "pending_manual_review":
+      return "pending";
+    case "rejected":
+    case "requires_resubmission":
+      return "rejected";
+    default:
+      return "none"; // not_started / null
+  }
+}
 
 type AuthState = {
   session: Session | null;
   user: User | null;
   profile: Profile | null;
   loading: boolean;
+  isAdmin: boolean;
+  sellerStatus: SellerStatus;
   isVerifiedSeller: boolean;
   signIn: (email: string, password: string) => Promise<{ error: string | null }>;
   signUp: (
@@ -40,6 +55,7 @@ type AuthState = {
     password: string,
     displayName: string,
   ) => Promise<{ error: string | null; needsConfirm: boolean }>;
+  signInWithMagicLink: (email: string) => Promise<{ error: string | null }>;
   signOut: () => Promise<void>;
   refreshProfile: () => Promise<void>;
 };
@@ -49,19 +65,25 @@ const AuthContext = createContext<AuthState | null>(null);
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [session, setSession] = useState<Session | null>(null);
   const [profile, setProfile] = useState<Profile | null>(null);
+  const [isAdmin, setIsAdmin] = useState(false);
+  const [sellerStatus, setSellerStatus] = useState<SellerStatus>("none");
   const [loading, setLoading] = useState(true);
 
   const loadProfile = useCallback(async (uid: string | undefined) => {
     if (!uid) {
       setProfile(null);
+      setIsAdmin(false);
+      setSellerStatus("none");
       return;
     }
-    const { data } = await supabase
-      .from("profiles")
-      .select("*")
-      .eq("id", uid)
-      .maybeSingle();
-    setProfile((data as Profile) ?? null);
+    const [prof, roles, sv] = await Promise.all([
+      supabase.from("profiles").select("*").eq("id", uid).maybeSingle(),
+      supabase.from("user_roles").select("role").eq("user_id", uid),
+      supabase.from("seller_verifications").select("status").eq("user_id", uid).maybeSingle(),
+    ]);
+    setProfile((prof.data as Profile) ?? null);
+    setIsAdmin(((roles.data as { role: string }[]) ?? []).some((r) => r.role === "admin"));
+    setSellerStatus(mapSellerStatus((sv.data as { status?: string } | null)?.status));
   }, []);
 
   useEffect(() => {
@@ -98,16 +120,21 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         options: { data: { display_name: displayName } },
       });
       if (error) return { error: error.message, needsConfirm: false };
-      // With email confirmation enabled, there's no session until the user
-      // clicks the link in their inbox.
       return { error: null, needsConfirm: !data.session };
     },
     [],
   );
 
+  const signInWithMagicLink = useCallback(async (email: string) => {
+    const { error } = await supabase.auth.signInWithOtp({ email });
+    return { error: error?.message ?? null };
+  }, []);
+
   const signOut = useCallback(async () => {
     await supabase.auth.signOut();
     setProfile(null);
+    setIsAdmin(false);
+    setSellerStatus("none");
   }, []);
 
   const refreshProfile = useCallback(
@@ -120,9 +147,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     user: session?.user ?? null,
     profile,
     loading,
-    isVerifiedSeller: profile?.seller_status === "verified",
+    isAdmin,
+    sellerStatus,
+    isVerifiedSeller: sellerStatus === "verified",
     signIn,
     signUp,
+    signInWithMagicLink,
     signOut,
     refreshProfile,
   };

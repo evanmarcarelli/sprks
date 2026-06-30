@@ -12,7 +12,7 @@ const nav = [
 ] as const;
 
 export function SiteHeader() {
-  const { user, profile, signOut } = useAuth();
+  const { user, profile, isVerifiedSeller, signOut } = useAuth();
   const navigate = useNavigate();
 
   const handleSignOut = async () => {
@@ -46,7 +46,7 @@ export function SiteHeader() {
               to="/account"
               className="hidden sm:flex items-center gap-2 text-xs uppercase tracking-[0.2em] text-muted-foreground hover:text-foreground transition"
             >
-              {profile?.seller_status === "verified" && (
+              {isVerifiedSeller && (
                 <span
                   title="Verified seller"
                   className="inline-block h-1.5 w-1.5 rounded-full bg-silver-bright"
